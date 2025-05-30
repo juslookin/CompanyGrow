@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
+import { Settings, Users, BookOpen, FolderOpen, LogOut, User } from 'lucide-react';
 import Catalog from './catalog';
 import Manage from './manage';
 import Review from './review';
 import Profile from './profile';
 
 const ManagerDashboard = () => {
-  const [activeTab, setActiveTab] = useState('catalog'); // Default to dashboard home
+  const [activeTab, setActiveTab] = useState('catalog');
+  const [hoveredTab, setHoveredTab] = useState(null);
+  const [logoutHovered, setLogoutHovered] = useState(false);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
 
   const handleLogout = () => {
-    // Clear any authentication tokens or user data
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('id');
-    // Redirect to login page
     window.location.href = '/';
   };
 
@@ -35,35 +36,47 @@ const ManagerDashboard = () => {
           <div style={styles.welcomeSection}>
             <h2 style={styles.welcomeTitle}>Welcome to Manager Dashboard</h2>
             <p style={styles.welcomeText}>
-              Manage your team's training, manage, and performance from this central hub.
+              Manage your team's training, projects, and performance from this central hub.
             </p>
             
             <div style={styles.quickStats}>
               <div style={styles.statCard}>
-                <h3 style={styles.statCardTitle}>Team Training</h3>
+                <div style={styles.statCardIcon}>
+                  <BookOpen size={24} />
+                </div>
+                <h3 style={styles.statCardTitle}>Training Catalog Management</h3>
                 <p style={styles.statCardText}>
-                  Monitor and manage team member training progress and course assignments
+                  Browse and assign training courses to team members. Monitor course completion rates, track skill development progress, and ensure compliance with organizational learning objectives.
                 </p>
               </div>
               
               <div style={styles.statCard}>
-                <h3 style={styles.statCardTitle}>Project Management</h3>
+                <div style={styles.statCardIcon}>
+                  <FolderOpen size={24} />
+                </div>
+                <h3 style={styles.statCardTitle}>Project Management & Oversight</h3>
                 <p style={styles.statCardText}>
-                  Oversee project assignments, progress tracking, and team collaboration
+                  Oversee project assignments, track progress milestones, manage team collaboration, and ensure timely delivery of project objectives with comprehensive status monitoring.
                 </p>
               </div>
               
               <div style={styles.statCard}>
-                <h3 style={styles.statCardTitle}>Performance Review</h3>
+                <div style={styles.statCardIcon}>
+                  <Users size={24} />
+                </div>
+                <h3 style={styles.statCardTitle}>Performance Review & Analytics</h3>
                 <p style={styles.statCardText}>
-                  Conduct performance evaluations, set goals, and manage team development
+                  Conduct comprehensive performance evaluations, set strategic goals, manage team development initiatives, and analyze performance metrics to drive continuous improvement.
                 </p>
               </div>
               
               <div style={styles.statCard}>
-                <h3 style={styles.statCardTitle}>Team Overview</h3>
+                <div style={styles.statCardIcon}>
+                  <User size={24} />
+                </div>
+                <h3 style={styles.statCardTitle}>Team Overview & Insights</h3>
                 <p style={styles.statCardText}>
-                  Get insights into team performance, badge achievements, and overall progress
+                  Get comprehensive insights into team performance metrics, badge achievements, skill progression, and overall productivity to make informed management decisions.
                 </p>
               </div>
             </div>
@@ -71,149 +84,6 @@ const ManagerDashboard = () => {
         );
     }
   };
-
-  // Style objects
-  const styles = {
-    managerDashboard: {
-      minHeight: '100vh',
-      backgroundColor: '#f5f5f5',
-      fontFamily: "'Arial', sans-serif"
-    },
-    
-    dashboardHeader: {
-      backgroundColor: '#2c3e50',
-      color: 'white',
-      padding: '1rem 2rem',
-      textAlign: 'center',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-    },
-    
-    headerTitle: {
-      margin: 0,
-      fontSize: '2rem',
-      fontWeight: 600
-    },
-    
-    dashboardNavbar: {
-      backgroundColor: '#34495e',
-      padding: '0 2rem',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-    },
-    
-    navTabs: {
-      display: 'flex',
-      gap: 0
-    },
-    
-    navTab: {
-      backgroundColor: 'transparent',
-      color: 'white',
-      border: 'none',
-      padding: '1rem 1.5rem',
-      cursor: 'pointer',
-      fontSize: '1rem',
-      fontWeight: 500,
-      transition: 'all 0.3s ease',
-        borderBottomWidth: '3px',
-        borderBottomStyle: 'solid',
-        borderBottomColor: 'transparent'
-    },
-    
-    navTabActive: {
-      backgroundColor: '#2c3e50',
-      borderBottomColor: '#e74c3c'
-    },
-    
-    navTabHover: {
-      backgroundColor: '#2c3e50',
-      borderBottomColor: '#e74c3c'
-    },
-    
-    logoutBtn: {
-      backgroundColor: '#e74c3c',
-      color: 'white',
-      border: 'none',
-      padding: '0.75rem 1.5rem',
-      borderRadius: '5px',
-      cursor: 'pointer',
-      fontSize: '1rem',
-      fontWeight: 500,
-      transition: 'background-color 0.3s ease'
-    },
-    
-    logoutBtnHover: {
-      backgroundColor: '#c0392b'
-    },
-    
-    dashboardContent: {
-      padding: '2rem',
-      maxWidth: '1200px',
-      margin: '0 auto',
-      minHeight: 'calc(100vh - 140px)' // Adjust based on header/navbar height
-    },
-    
-    welcomeSection: {
-      backgroundColor: 'white',
-      padding: '2rem',
-      borderRadius: '8px',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-      marginBottom: '2rem'
-    },
-    
-    welcomeTitle: {
-      color: '#2c3e50',
-      marginBottom: '1rem',
-      textAlign: 'center'
-    },
-    
-    welcomeText: {
-      color: '#7f8c8d',
-      fontSize: '1.1rem',
-      textAlign: 'center',
-      marginBottom: '2rem'
-    },
-    
-    quickStats: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-      gap: '1.5rem'
-    },
-    
-    statCard: {
-      backgroundColor: '#f8f9fa',
-      padding: '1.5rem',
-      borderRadius: '8px',
-      border: '1px solid #dee2e6',
-      textAlign: 'center',
-      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-      cursor: 'pointer'
-    },
-    
-    statCardHover: {
-      transform: 'translateY(-5px)',
-      boxShadow: '0 4px 8px rgba(0,0,0,0.15)'
-    },
-    
-    statCardTitle: {
-      color: '#2c3e50',
-      marginBottom: '0.5rem',
-      fontSize: '1.2rem'
-    },
-    
-    statCardText: {
-      color: '#7f8c8d',
-      margin: 0,
-      lineHeight: '1.5'
-    }
-  };
-
-  // State for hover effects
-  const [hoveredTab, setHoveredTab] = useState(null);
-  const [hoveredCard, setHoveredCard] = useState(null);
-  const [logoutHovered, setLogoutHovered] = useState(false);
 
   const getTabStyle = (tabName) => {
     const isActive = activeTab === tabName;
@@ -226,65 +96,240 @@ const ManagerDashboard = () => {
     };
   };
 
+  // Updated styles to match Admin Dashboard
+  const styles = {
+    container: {
+      minHeight: '100vh',
+      backgroundColor: '#f8fafc',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    },
+    
+    navbar: {
+      backgroundColor: 'white',
+      borderBottom: '1px solid #e5e7eb',
+      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+      position: 'sticky',
+      top: 0,
+      zIndex: 1000
+    },
+    
+    navContainer: {
+      maxWidth: '1200px',
+      margin: '0 auto',
+      padding: '0 24px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      height: '64px'
+    },
+    
+    navBrand: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      fontSize: '20px',
+      fontWeight: 'bold',
+      color: '#1f2937'
+    },
+    
+    navTabs: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px'
+    },
+    
+    navTab: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      padding: '8px 16px',
+      borderRadius: '6px',
+      fontSize: '14px',
+      fontWeight: '500',
+      cursor: 'pointer',
+      transition: 'all 0.2s',
+      border: 'none',
+      backgroundColor: 'transparent',
+      color: '#6b7280'
+    },
+    
+    navTabActive: {
+      backgroundColor: '#667eea',
+      color: 'white'
+    },
+    
+    navTabHover: {
+      backgroundColor: '#f3f4f6',
+      color: '#374151'
+    },
+    
+    logoutButton: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      padding: '8px 16px',
+      borderRadius: '6px',
+      fontSize: '14px',
+      fontWeight: '500',
+      cursor: 'pointer',
+      transition: 'all 0.2s',
+      border: 'none',
+      backgroundColor: '#ef4444',
+      color: 'white'
+    },
+    
+    logoutButtonHover: {
+      backgroundColor: '#dc2626'
+    },
+    
+    main: {
+      maxWidth: '1200px',
+      margin: '0 auto',
+      padding: '24px'
+    },
+    
+    content: {
+      backgroundColor: 'white',
+      borderRadius: '12px',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+      overflow: 'hidden'
+    },
+    
+    welcomeSection: {
+      backgroundColor: 'white',
+      padding: '32px',
+      borderRadius: '12px',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+      marginBottom: '24px'
+    },
+    
+    welcomeTitle: {
+      fontSize: '32px',
+      fontWeight: 'bold',
+      color: '#1f2937',
+      marginBottom: '12px',
+      textAlign: 'center'
+    },
+    
+    welcomeText: {
+      color: '#6b7280',
+      fontSize: '18px',
+      textAlign: 'center',
+      marginBottom: '32px',
+      lineHeight: '1.6'
+    },
+    
+    quickStats: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+      gap: '24px'
+    },
+    
+    statCard: {
+      backgroundColor: '#f9fafb',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid #e5e7eb',
+      textAlign: 'center',
+      transition: 'all 0.3s ease',
+      cursor: 'pointer',
+      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+    },
+    
+    statCardIcon: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '48px',
+      height: '48px',
+      backgroundColor: '#667eea',
+      color: 'white',
+      borderRadius: '12px',
+      margin: '0 auto 16px auto'
+    },
+    
+    statCardTitle: {
+      color: '#1f2937',
+      marginBottom: '12px',
+      fontSize: '18px',
+      fontWeight: '600'
+    },
+    
+    statCardText: {
+      color: '#6b7280',
+      margin: 0,
+      lineHeight: '1.6',
+      fontSize: '14px',
+      textAlign: 'left'
+    }
+  };
+
   return (
-    <div style={styles.managerDashboard}>
-      <header style={styles.dashboardHeader}>
-        <h1 style={styles.headerTitle}>Manager Dashboard</h1>
-      </header>
-      
-      <nav style={styles.dashboardNavbar}>
-        <div style={styles.navTabs}>
-          <button 
-            style={getTabStyle('catalog')}
-            onMouseEnter={() => setHoveredTab('catalog')}
-            onMouseLeave={() => setHoveredTab(null)}
-            onClick={() => handleTabClick('catalog')}
-          >
-            Catalog
-          </button>
+    <div style={styles.container}>
+      <nav style={styles.navbar}>
+        <div style={styles.navContainer}>
+          <div style={styles.navBrand}>
+            <Settings size={24} />
+            Manager Dashboard
+          </div>
+          <div style={styles.navTabs}>
+            <button 
+              style={getTabStyle('catalog')}
+              onMouseEnter={() => setHoveredTab('catalog')}
+              onMouseLeave={() => setHoveredTab(null)}
+              onClick={() => handleTabClick('catalog')}
+            >
+              <BookOpen size={16} />
+              Catalog
+            </button>
+            
+            <button 
+              style={getTabStyle('manage')}
+              onMouseEnter={() => setHoveredTab('manage')}
+              onMouseLeave={() => setHoveredTab(null)}
+              onClick={() => handleTabClick('manage')}
+            >
+              <Users size={16} />
+              Manage
+            </button>
+            
+            <button 
+              style={getTabStyle('review')}
+              onMouseEnter={() => setHoveredTab('review')}
+              onMouseLeave={() => setHoveredTab(null)}
+              onClick={() => handleTabClick('review')}
+            >
+              <FolderOpen size={16} />
+              Review
+            </button>
+            
+            <button 
+              style={getTabStyle('profile')}
+              onMouseEnter={() => setHoveredTab('profile')}
+              onMouseLeave={() => setHoveredTab(null)}
+              onClick={() => handleTabClick('profile')}
+            >
+              <User size={16} />
+              Profile
+            </button>
+          </div>
           
           <button 
-            style={getTabStyle('manage')}
-            onMouseEnter={() => setHoveredTab('manage')}
-            onMouseLeave={() => setHoveredTab(null)}
-            onClick={() => handleTabClick('manage')}
+            style={{
+              ...styles.logoutButton,
+              ...(logoutHovered ? styles.logoutButtonHover : {})
+            }}
+            onMouseEnter={() => setLogoutHovered(true)}
+            onMouseLeave={() => setLogoutHovered(false)}
+            onClick={handleLogout}
           >
-            Manage
-          </button>
-          
-          <button 
-            style={getTabStyle('review')}
-            onMouseEnter={() => setHoveredTab('review')}
-            onMouseLeave={() => setHoveredTab(null)}
-            onClick={() => handleTabClick('review')}
-          >
-            Review
-          </button>
-          
-          <button 
-            style={getTabStyle('profile')}
-            onMouseEnter={() => setHoveredTab('profile')}
-            onMouseLeave={() => setHoveredTab(null)}
-            onClick={() => handleTabClick('profile')}
-          >
-            Profile
+            <LogOut size={16} />
+            Logout
           </button>
         </div>
-        
-        <button 
-          style={{
-            ...styles.logoutBtn,
-            ...(logoutHovered ? styles.logoutBtnHover : {})
-          }}
-          onMouseEnter={() => setLogoutHovered(true)}
-          onMouseLeave={() => setLogoutHovered(false)}
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
       </nav>
       
-      <main style={styles.dashboardContent}>
+      <main style={styles.main}>
         {renderActiveComponent()}
       </main>
     </div>

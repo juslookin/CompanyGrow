@@ -1,6 +1,15 @@
-// perf.js
 import React, { useState, useEffect } from 'react';
 import { Bar, Line, Doughnut } from 'react-chartjs-2';
+import { 
+  BarChart3, 
+  TrendingUp, 
+  Award, 
+  Target, 
+  Calendar, 
+  Eye,
+  Filter,
+  RefreshCw
+} from 'lucide-react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -64,11 +73,11 @@ const Perf = () => {
 
   // Badge difficulty mapping
   const badgeDifficultyMap = {
-    'Green': { difficulty: 'Beginner', color: '#27ae60', points: 10 },
-    'Cyan': { difficulty: 'Intermediate', color: '#17a2b8', points: 20 },
-    'Blue': { difficulty: 'Advanced', color: '#007bff', points: 30 },
-    'Purple': { difficulty: 'Expert', color: '#6f42c1', points: 40 },
-    'Red': { difficulty: 'Master', color: '#dc3545', points: 50 }
+    'Green': { difficulty: 'Beginner', color: '#10b981', points: 10 },
+    'Cyan': { difficulty: 'Intermediate', color: '#06b6d4', points: 20 },
+    'Blue': { difficulty: 'Advanced', color: '#3b82f6', points: 30 },
+    'Purple': { difficulty: 'Expert', color: '#8b5cf6', points: 40 },
+    'Red': { difficulty: 'Master', color: '#ef4444', points: 50 }
   };
 
   // Separate data processing for courses and projects
@@ -199,16 +208,16 @@ const Perf = () => {
         {
           label: `${type} Badges`,
           data: sortedMonths.map(month => timeBasedData[month].badges),
-          borderColor: type === 'Course' ? '#3498db' : '#e74c3c',
-          backgroundColor: type === 'Course' ? 'rgba(52, 152, 219, 0.1)' : 'rgba(231, 76, 60, 0.1)',
+          borderColor: type === 'Course' ? '#667eea' : '#ef4444',
+          backgroundColor: type === 'Course' ? 'rgba(102, 126, 234, 0.1)' : 'rgba(239, 68, 68, 0.1)',
           tension: 0.4,
           yAxisID: 'y'
         },
         {
           label: `${type} Points`,
           data: sortedMonths.map(month => timeBasedData[month].points),
-          borderColor: type === 'Course' ? '#2980b9' : '#c0392b',
-          backgroundColor: type === 'Course' ? 'rgba(41, 128, 185, 0.1)' : 'rgba(192, 57, 43, 0.1)',
+          borderColor: type === 'Course' ? '#4f46e5' : '#dc2626',
+          backgroundColor: type === 'Course' ? 'rgba(79, 70, 229, 0.1)' : 'rgba(220, 38, 38, 0.1)',
           tension: 0.4,
           yAxisID: 'y1'
         }
@@ -222,8 +231,8 @@ const Perf = () => {
     datasets: [{
       data: [goalStats.completed, goalStats.inProgress, goalStats.pending],
       backgroundColor: type === 'Course' ? 
-        ['#27ae60', '#f39c12', '#e74c3c'] : 
-        ['#2ecc71', '#e67e22', '#e74c3c'],
+        ['#10b981', '#f59e0b', '#ef4444'] : 
+        ['#059669', '#d97706', '#dc2626'],
       borderWidth: 2,
       borderColor: '#fff'
     }]
@@ -266,30 +275,465 @@ const Perf = () => {
     }
   };
 
+  // Updated styles to match Employee Dashboard
+  const styles = {
+    container: {
+      backgroundColor: 'white',
+      borderRadius: '12px',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+      overflow: 'hidden'
+    },
+    
+    header: {
+      backgroundColor: '#667eea',
+      color: 'white',
+      padding: '32px',
+      textAlign: 'center'
+    },
+    
+    title: {
+      fontSize: '32px',
+      fontWeight: 'bold',
+      marginBottom: '8px',
+      margin: 0
+    },
+    
+    subtitle: {
+      fontSize: '18px',
+      opacity: 0.9,
+      margin: 0
+    },
+    
+    content: {
+      padding: '32px'
+    },
+    
+    headerControls: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: '32px',
+      flexWrap: 'wrap',
+      gap: '16px'
+    },
+    
+    viewSelector: {
+      display: 'flex',
+      backgroundColor: '#f3f4f6',
+      borderRadius: '8px',
+      padding: '4px'
+    },
+    
+    viewButton: {
+      padding: '8px 16px',
+      border: 'none',
+      backgroundColor: 'transparent',
+      borderRadius: '6px',
+      cursor: 'pointer',
+      fontSize: '14px',
+      fontWeight: '500',
+      color: '#6b7280',
+      transition: 'all 0.3s ease'
+    },
+    
+    viewButtonActive: {
+      backgroundColor: '#667eea',
+      color: 'white',
+      boxShadow: '0 2px 4px rgba(102, 126, 234, 0.3)'
+    },
+    
+    periodSelector: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px'
+    },
+    
+    label: {
+      color: '#6b7280',
+      fontWeight: '500',
+      fontSize: '14px'
+    },
+    
+    select: {
+      padding: '8px 12px',
+      borderRadius: '6px',
+      border: '1px solid #e5e7eb',
+      fontSize: '14px',
+      backgroundColor: 'white',
+      color: '#1f2937'
+    },
+    
+    summaryGrid: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+      gap: '24px',
+      marginBottom: '32px'
+    },
+    
+    summaryCard: {
+      backgroundColor: '#f9fafb',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid #e5e7eb',
+      textAlign: 'center',
+      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+    },
+    
+    summaryIcon: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '48px',
+      height: '48px',
+      backgroundColor: '#667eea',
+      color: 'white',
+      borderRadius: '12px',
+      margin: '0 auto 16px auto'
+    },
+    
+    summaryValue: {
+      color: '#1f2937',
+      fontSize: '32px',
+      fontWeight: 'bold',
+      margin: '0 0 8px 0'
+    },
+    
+    summaryTitle: {
+      color: '#6b7280',
+      fontSize: '14px',
+      fontWeight: '500',
+      margin: '0 0 4px 0',
+      textTransform: 'uppercase',
+      letterSpacing: '0.5px'
+    },
+    
+    summarySubtext: {
+      color: '#9ca3af',
+      fontSize: '12px'
+    },
+    
+    section: {
+      marginBottom: '32px'
+    },
+    
+    sectionHeader: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      marginBottom: '24px',
+      paddingBottom: '12px',
+      borderBottom: '2px solid #e5e7eb'
+    },
+    
+    sectionTitle: {
+      fontSize: '24px',
+      fontWeight: '600',
+      color: '#1f2937',
+      margin: 0
+    },
+    
+    sectionIcon: {
+      color: '#667eea'
+    },
+    
+    typeHeader: {
+      backgroundColor: '#f9fafb',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid #e5e7eb',
+      marginBottom: '32px'
+    },
+    
+    typeTitle: {
+      color: '#1f2937',
+      margin: '0 0 16px 0',
+      fontSize: '24px',
+      fontWeight: '600'
+    },
+    
+    typeStats: {
+      display: 'flex',
+      gap: '32px',
+      flexWrap: 'wrap'
+    },
+    
+    chartsGrid: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+      gap: '24px',
+      marginBottom: '32px'
+    },
+    
+    fullWidthChart: {
+      marginBottom: '32px'
+    },
+    
+    chartContainer: {
+      backgroundColor: '#f9fafb',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid #e5e7eb'
+    },
+    
+    chartTitle: {
+      color: '#1f2937',
+      marginBottom: '16px',
+      fontSize: '18px',
+      fontWeight: '600'
+    },
+    
+    chartWrapper: {
+      height: '300px',
+      position: 'relative'
+    },
+    
+    recentBadgesSection: {
+      backgroundColor: '#f9fafb',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid #e5e7eb',
+      marginBottom: '32px'
+    },
+    
+    badgesGrid: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+      gap: '16px'
+    },
+    
+    badgeCard: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '16px',
+      padding: '16px',
+      backgroundColor: 'white',
+      borderRadius: '8px',
+      border: '1px solid #e5e7eb'
+    },
+    
+    badgeIcon: {
+      width: '50px',
+      height: '50px',
+      borderRadius: '50%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: 'white',
+      fontWeight: 'bold',
+      fontSize: '12px',
+      flexShrink: 0
+    },
+    
+    badgeInfo: {
+      flex: 1
+    },
+    
+    badgeTitle: {
+      margin: '0 0 4px 0',
+      color: '#1f2937',
+      fontSize: '14px',
+      fontWeight: '600'
+    },
+    
+    badgeDescription: {
+      margin: '0 0 8px 0',
+      color: '#6b7280',
+      fontSize: '12px',
+      lineHeight: '1.4'
+    },
+    
+    badgeDate: {
+      color: '#9ca3af',
+      fontSize: '12px',
+      marginRight: '16px'
+    },
+    
+    badgePoints: {
+      color: '#10b981',
+      fontSize: '12px',
+      fontWeight: '600'
+    },
+    
+    comparisonGrid: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+      gap: '24px',
+      marginBottom: '32px'
+    },
+    
+    comparisonCard: {
+      backgroundColor: '#f9fafb',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid #e5e7eb'
+    },
+    
+    comparisonTitle: {
+      color: '#1f2937',
+      margin: '0 0 16px 0',
+      fontSize: '20px',
+      fontWeight: '600',
+      textAlign: 'center'
+    },
+    
+    comparisonStats: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px'
+    },
+    
+    comparisonStat: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '8px 0',
+      borderBottom: '1px solid #e5e7eb'
+    },
+    
+    comparisonLabel: {
+      color: '#6b7280',
+      fontSize: '14px'
+    },
+    
+    comparisonValue: {
+      color: '#1f2937',
+      fontSize: '16px',
+      fontWeight: '600'
+    },
+    
+    legendSection: {
+      backgroundColor: '#f9fafb',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid #e5e7eb'
+    },
+    
+    legendTitle: {
+      color: '#1f2937',
+      marginBottom: '16px',
+      fontSize: '18px',
+      fontWeight: '600'
+    },
+    
+    legendGrid: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+      gap: '12px'
+    },
+    
+    legendItem: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px'
+    },
+    
+    legendColor: {
+      width: '16px',
+      height: '16px',
+      borderRadius: '3px'
+    },
+    
+    legendText: {
+      color: '#6b7280',
+      fontSize: '14px'
+    },
+    
+    loadingContainer: {
+      textAlign: 'center',
+      padding: '64px 32px',
+      backgroundColor: 'white',
+      borderRadius: '12px',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+    },
+    
+    loadingTitle: {
+      fontSize: '24px',
+      color: '#1f2937',
+      marginBottom: '16px'
+    },
+    
+    loadingSpinner: {
+      width: '40px',
+      height: '40px',
+      border: '4px solid #e5e7eb',
+      borderTop: '4px solid #667eea',
+      borderRadius: '50%',
+      animation: 'spin 1s linear infinite',
+      margin: '0 auto'
+    },
+    
+    errorContainer: {
+      textAlign: 'center',
+      padding: '64px 32px',
+      backgroundColor: 'white',
+      borderRadius: '12px',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+    },
+    
+    errorTitle: {
+      color: '#ef4444',
+      fontSize: '24px',
+      marginBottom: '16px'
+    },
+    
+    retryButton: {
+      backgroundColor: '#667eea',
+      color: 'white',
+      border: 'none',
+      padding: '12px 24px',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      fontSize: '16px',
+      fontWeight: '600',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      margin: '16px auto 0'
+    },
+    
+    noDataContainer: {
+      textAlign: 'center',
+      padding: '64px 32px',
+      backgroundColor: 'white',
+      borderRadius: '12px',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+      color: '#6b7280'
+    }
+  };
+
   if (loading) {
     return (
-      <div style={styles.loadingContainer}>
-        <div style={styles.spinner}></div>
-        <p>Loading performance data...</p>
+      <div style={styles.container}>
+        <div style={styles.loadingContainer}>
+          <div style={styles.loadingSpinner}></div>
+          <h2 style={styles.loadingTitle}>Loading performance data...</h2>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div style={styles.errorContainer}>
-        <h3>Error Loading Performance Data</h3>
-        <p>{error}</p>
-        <button onClick={fetchPerformanceData} style={styles.retryButton}>Retry</button>
+      <div style={styles.container}>
+        <div style={styles.errorContainer}>
+          <h3 style={styles.errorTitle}>Error Loading Performance Data</h3>
+          <p>{error}</p>
+          <button onClick={fetchPerformanceData} style={styles.retryButton}>
+            <RefreshCw size={16} />
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
 
   if (!performanceData || performanceData.length === 0) {
     return (
-      <div style={styles.noDataContainer}>
-        <h3>No Performance Data Available</h3>
-        <p>Complete some courses or projects to see your performance metrics.</p>
+      <div style={styles.container}>
+        <div style={styles.noDataContainer}>
+          <h3>No Performance Data Available</h3>
+          <p>Complete some courses or projects to see your performance metrics.</p>
+        </div>
       </div>
     );
   }
@@ -298,10 +742,15 @@ const Perf = () => {
   const periods = [...new Set(performanceData.map(metric => metric.period))];
 
   return (
-    <div style={styles.perfContainer}>
-      {/* Header with Navigation */}
+    <div style={styles.container}>
+      {/* Header */}
       <div style={styles.header}>
-        <h2 style={styles.title}>Performance Analytics</h2>
+        <h1 style={styles.title}>Performance Metrics & Analytics</h1>
+        <p style={styles.subtitle}>Track your achievements, progress, and professional growth</p>
+      </div>
+
+      <div style={styles.content}>
+        {/* Header with Navigation */}
         <div style={styles.headerControls}>
           <div style={styles.viewSelector}>
             <button 
@@ -311,6 +760,7 @@ const Perf = () => {
                 ...(selectedView === 'overview' ? styles.viewButtonActive : {})
               }}
             >
+              <Eye size={16} />
               Overview
             </button>
             <button 
@@ -320,7 +770,7 @@ const Perf = () => {
                 ...(selectedView === 'courses' ? styles.viewButtonActive : {})
               }}
             >
-              Courses Analytics
+              📚 Courses
             </button>
             <button 
               onClick={() => setSelectedView('projects')}
@@ -329,7 +779,7 @@ const Perf = () => {
                 ...(selectedView === 'projects' ? styles.viewButtonActive : {})
               }}
             >
-              Projects Analytics
+              🚀 Projects
             </button>
             <button 
               onClick={() => setSelectedView('comparison')}
@@ -338,10 +788,11 @@ const Perf = () => {
                 ...(selectedView === 'comparison' ? styles.viewButtonActive : {})
               }}
             >
-              Comparison
+              ⚖️ Comparison
             </button>
           </div>
           <div style={styles.periodSelector}>
+            <Filter size={16} style={{color: '#6b7280'}} />
             <label htmlFor="period-select" style={styles.label}>Period: </label>
             <select
               id="period-select"
@@ -356,719 +807,358 @@ const Perf = () => {
             </select>
           </div>
         </div>
-      </div>
 
-      {/* Overview Summary Cards */}
-      {selectedView === 'overview' && (
-        <>
-          <div style={styles.summaryGrid}>
-            <div style={styles.summaryCard}>
-              <h3 style={styles.summaryTitle}>Course Points</h3>
-              <p style={styles.summaryValue}>{processedData.courseStats.totalPoints}</p>
-              <span style={styles.summarySubtext}>{processedData.courseStats.totalBadges} badges earned</span>
-            </div>
-            <div style={styles.summaryCard}>
-              <h3 style={styles.summaryTitle}>Project Points</h3>
-              <p style={styles.summaryValue}>{processedData.projectStats.totalPoints}</p>
-              <span style={styles.summarySubtext}>{processedData.projectStats.totalBadges} badges earned</span>
-            </div>
-            <div style={styles.summaryCard}>
-              <h3 style={styles.summaryTitle}>Course Completion</h3>
-              <p style={styles.summaryValue}>{processedData.courseStats.completionRate}%</p>
-              <span style={styles.summarySubtext}>{processedData.courseStats.goals.completed} of {processedData.courseStats.goals.total} goals</span>
-            </div>
-            <div style={styles.summaryCard}>
-              <h3 style={styles.summaryTitle}>Project Completion</h3>
-              <p style={styles.summaryValue}>{processedData.projectStats.completionRate}%</p>
-              <span style={styles.summarySubtext}>{processedData.projectStats.goals.completed} of {processedData.projectStats.goals.total} goals</span>
-            </div>
-          </div>
-
-          <div style={styles.chartsGrid}>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Course Badges Overview</h3>
-              <div style={styles.chartWrapper}>
-                <Bar
-                  data={createTypeSpecificChart(processedData.courseData, 'Course')}
-                  options={chartOptions}
-                />
+        {/* Overview Summary Cards */}
+        {selectedView === 'overview' && (
+          <>
+            <div style={styles.summaryGrid}>
+              <div style={styles.summaryCard}>
+                <div style={styles.summaryIcon}>
+                  <TrendingUp size={24} />
+                </div>
+                <div style={styles.summaryValue}>{processedData.courseStats.totalPoints}</div>
+                <div style={styles.summaryTitle}>Course Points</div>
+                <span style={styles.summarySubtext}>{processedData.courseStats.totalBadges} badges earned</span>
+              </div>
+              <div style={styles.summaryCard}>
+                <div style={styles.summaryIcon}>
+                  <Award size={24} />
+                </div>
+                <div style={styles.summaryValue}>{processedData.projectStats.totalPoints}</div>
+                <div style={styles.summaryTitle}>Project Points</div>
+                <span style={styles.summarySubtext}>{processedData.projectStats.totalBadges} badges earned</span>
+              </div>
+              <div style={styles.summaryCard}>
+                <div style={styles.summaryIcon}>
+                  <Target size={24} />
+                </div>
+                <div style={styles.summaryValue}>{processedData.courseStats.completionRate}%</div>
+                <div style={styles.summaryTitle}>Course Completion</div>
+                <span style={styles.summarySubtext}>{processedData.courseStats.goals.completed} of {processedData.courseStats.goals.total} goals</span>
+              </div>
+              <div style={styles.summaryCard}>
+                <div style={styles.summaryIcon}>
+                  <BarChart3 size={24} />
+                </div>
+                <div style={styles.summaryValue}>{processedData.projectStats.completionRate}%</div>
+                <div style={styles.summaryTitle}>Project Completion</div>
+                <span style={styles.summarySubtext}>{processedData.projectStats.goals.completed} of {processedData.projectStats.goals.total} goals</span>
               </div>
             </div>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Project Badges Overview</h3>
-              <div style={styles.chartWrapper}>
-                <Bar
-                  data={createTypeSpecificChart(processedData.projectData, 'Project')}
-                  options={chartOptions}
-                />
+
+            <div style={styles.chartsGrid}>
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Course Badges Overview</h3>
+                <div style={styles.chartWrapper}>
+                  <Bar
+                    data={createTypeSpecificChart(processedData.courseData, 'Course')}
+                    options={chartOptions}
+                  />
+                </div>
+              </div>
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Project Badges Overview</h3>
+                <div style={styles.chartWrapper}>
+                  <Bar
+                    data={createTypeSpecificChart(processedData.projectData, 'Project')}
+                    options={chartOptions}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </>
-      )}
+          </>
+        )}
 
-      {/* Courses Analytics */}
-      {selectedView === 'courses' && (
-        <>
-          <div style={styles.typeHeader}>
-            <h3 style={styles.typeTitle}>📚 Courses Performance Analytics</h3>
-            <div style={styles.typeStats}>
-              <span>Total Points: <strong>{processedData.courseStats.totalPoints}</strong></span>
-              <span>Total Badges: <strong>{processedData.courseStats.totalBadges}</strong></span>
-              <span>Completion Rate: <strong>{processedData.courseStats.completionRate}%</strong></span>
-            </div>
-          </div>
-
-          <div style={styles.chartsGrid}>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Course Badges by Difficulty</h3>
-              <div style={styles.chartWrapper}>
-                <Bar
-                  data={createTypeSpecificChart(processedData.courseData, 'Course')}
-                  options={chartOptions}
-                />
+        {/* Courses Analytics */}
+        {selectedView === 'courses' && (
+          <>
+            <div style={styles.typeHeader}>
+              <h3 style={styles.typeTitle}>📚 Courses Performance Analytics</h3>
+              <div style={styles.typeStats}>
+                <span>Total Points: <strong>{processedData.courseStats.totalPoints}</strong></span>
+                <span>Total Badges: <strong>{processedData.courseStats.totalBadges}</strong></span>
+                <span>Completion Rate: <strong>{processedData.courseStats.completionRate}%</strong></span>
               </div>
             </div>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Course Goal Status</h3>
-              <div style={styles.chartWrapper}>
-                <Doughnut
-                  data={createTypeGoalChart(processedData.courseStats.goals, 'Course')}
-                  options={doughnutOptions}
-                />
+
+            <div style={styles.chartsGrid}>
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Course Badges by Difficulty</h3>
+                <div style={styles.chartWrapper}>
+                  <Bar
+                    data={createTypeSpecificChart(processedData.courseData, 'Course')}
+                    options={chartOptions}
+                  />
+                </div>
+              </div>
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Course Goal Status</h3>
+                <div style={styles.chartWrapper}>
+                  <Doughnut
+                    data={createTypeGoalChart(processedData.courseStats.goals, 'Course')}
+                    options={doughnutOptions}
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          <div style={styles.fullWidthChart}>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Course Progress Over Time</h3>
-              <div style={styles.chartWrapper}>
-                <Line
-                  data={createTypeTimeChart(processedData.courseStats.timeBasedData, 'Course')}
-                  options={lineChartOptions}
-                />
+            <div style={styles.fullWidthChart}>
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Course Progress Over Time</h3>
+                <div style={styles.chartWrapper}>
+                  <Line
+                    data={createTypeTimeChart(processedData.courseStats.timeBasedData, 'Course')}
+                    options={lineChartOptions}
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          <div style={styles.recentBadgesSection}>
-            <h3 style={styles.sectionTitle}>Recent Course Achievements</h3>
-            <div style={styles.badgesGrid}>
-              {processedData.courseStats.recentBadges.slice(0, 5).map((badge, index) => (
-                <div key={index} style={styles.badgeCard}>
-                  <div 
-                    style={{
-                      ...styles.badgeIcon,
-                      backgroundColor: badgeDifficultyMap[badge.title]?.color || '#gray'
-                    }}
-                  >
-                    {badge.title}
+            <div style={styles.recentBadgesSection}>
+              <h3 style={styles.sectionTitle}>Recent Course Achievements</h3>
+              <div style={styles.badgesGrid}>
+                {processedData.courseStats.recentBadges.slice(0, 5).map((badge, index) => (
+                  <div key={index} style={styles.badgeCard}>
+                    <div 
+                      style={{
+                        ...styles.badgeIcon,
+                        backgroundColor: badgeDifficultyMap[badge.title]?.color || '#gray'
+                      }}
+                    >
+                      {badge.title}
+                    </div>
+                    <div style={styles.badgeInfo}>
+                      <h4 style={styles.badgeTitle}>COURSE</h4>
+                      <p style={styles.badgeDescription}>{badge.description}</p>
+                      <span style={styles.badgeDate}>
+                        {new Date(badge.dateEarned).toLocaleDateString()}
+                      </span>
+                      <span style={styles.badgePoints}>
+                        +{badgeDifficultyMap[badge.title]?.points || 0} points
+                      </span>
+                    </div>
                   </div>
-                  <div style={styles.badgeInfo}>
-                    <h4 style={styles.badgeTitle}>COURSE</h4>
-                    <p style={styles.badgeDescription}>{badge.description}</p>
-                    <span style={styles.badgeDate}>
-                      {new Date(badge.dateEarned).toLocaleDateString()}
-                    </span>
-                    <span style={styles.badgePoints}>
-                      +{badgeDifficultyMap[badge.title]?.points || 0} points
-                    </span>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* Projects Analytics */}
+        {selectedView === 'projects' && (
+          <>
+            <div style={styles.typeHeader}>
+              <h3 style={styles.typeTitle}>🚀 Projects Performance Analytics</h3>
+              <div style={styles.typeStats}>
+                <span>Total Points: <strong>{processedData.projectStats.totalPoints}</strong></span>
+                <span>Total Badges: <strong>{processedData.projectStats.totalBadges}</strong></span>
+                <span>Completion Rate: <strong>{processedData.projectStats.completionRate}%</strong></span>
+              </div>
+            </div>
+
+            <div style={styles.chartsGrid}>
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Project Badges by Difficulty</h3>
+                <div style={styles.chartWrapper}>
+                  <Bar
+                    data={createTypeSpecificChart(processedData.projectData, 'Project')}
+                    options={chartOptions}
+                  />
+                </div>
+              </div>
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Project Goal Status</h3>
+                <div style={styles.chartWrapper}>
+                  <Doughnut
+                    data={createTypeGoalChart(processedData.projectStats.goals, 'Project')}
+                    options={doughnutOptions}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div style={styles.fullWidthChart}>
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Project Progress Over Time</h3>
+                <div style={styles.chartWrapper}>
+                  <Line
+                    data={createTypeTimeChart(processedData.projectStats.timeBasedData, 'Project')}
+                    options={lineChartOptions}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div style={styles.recentBadgesSection}>
+              <h3 style={styles.sectionTitle}>Recent Project Achievements</h3>
+              <div style={styles.badgesGrid}>
+                {processedData.projectStats.recentBadges.slice(0, 5).map((badge, index) => (
+                  <div key={index} style={styles.badgeCard}>
+                    <div 
+                      style={{
+                        ...styles.badgeIcon,
+                        backgroundColor: badgeDifficultyMap[badge.title]?.color || '#gray'
+                      }}
+                    >
+                      {badge.title}
+                    </div>
+                    <div style={styles.badgeInfo}>
+                      <h4 style={styles.badgeTitle}>PROJECT</h4>
+                      <p style={styles.badgeDescription}>{badge.description}</p>
+                      <span style={styles.badgeDate}>
+                        {new Date(badge.dateEarned).toLocaleDateString()}
+                      </span>
+                      <span style={styles.badgePoints}>
+                        +{badgeDifficultyMap[badge.title]?.points || 0} points
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* Comparison View */}
+        {selectedView === 'comparison' && (
+          <>
+            <div style={styles.section}>
+              <div style={styles.sectionHeader}>
+                <BarChart3 size={24} style={styles.sectionIcon} />
+                <h2 style={styles.sectionTitle}>Courses vs Projects Comparison</h2>
+              </div>
+
+              <div style={styles.comparisonGrid}>
+                <div style={styles.comparisonCard}>
+                  <h4 style={styles.comparisonTitle}>📚 Courses</h4>
+                  <div style={styles.comparisonStats}>
+                    <div style={styles.comparisonStat}>
+                      <span style={styles.comparisonLabel}>Total Points</span>
+                      <span style={styles.comparisonValue}>{processedData.courseStats.totalPoints}</span>
+                    </div>
+                    <div style={styles.comparisonStat}>
+                      <span style={styles.comparisonLabel}>Total Badges</span>
+                      <span style={styles.comparisonValue}>{processedData.courseStats.totalBadges}</span>
+                    </div>
+                    <div style={styles.comparisonStat}>
+                      <span style={styles.comparisonLabel}>Completion Rate</span>
+                      <span style={styles.comparisonValue}>{processedData.courseStats.completionRate}%</span>
+                    </div>
+                    <div style={styles.comparisonStat}>
+                      <span style={styles.comparisonLabel}>Active Goals</span>
+                      <span style={styles.comparisonValue}>{processedData.courseStats.goals.inProgress}</span>
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </>
-      )}
 
-      {/* Projects Analytics */}
-      {selectedView === 'projects' && (
-        <>
-          <div style={styles.typeHeader}>
-            <h3 style={styles.typeTitle}>🚀 Projects Performance Analytics</h3>
-            <div style={styles.typeStats}>
-              <span>Total Points: <strong>{processedData.projectStats.totalPoints}</strong></span>
-              <span>Total Badges: <strong>{processedData.projectStats.totalBadges}</strong></span>
-              <span>Completion Rate: <strong>{processedData.projectStats.completionRate}%</strong></span>
-            </div>
-          </div>
-
-          <div style={styles.chartsGrid}>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Project Badges by Difficulty</h3>
-              <div style={styles.chartWrapper}>
-                <Bar
-                  data={createTypeSpecificChart(processedData.projectData, 'Project')}
-                  options={chartOptions}
-                />
-              </div>
-            </div>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Project Goal Status</h3>
-              <div style={styles.chartWrapper}>
-                <Doughnut
-                  data={createTypeGoalChart(processedData.projectStats.goals, 'Project')}
-                  options={doughnutOptions}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div style={styles.fullWidthChart}>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Project Progress Over Time</h3>
-              <div style={styles.chartWrapper}>
-                <Line
-                  data={createTypeTimeChart(processedData.projectStats.timeBasedData, 'Project')}
-                  options={lineChartOptions}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div style={styles.recentBadgesSection}>
-            <h3 style={styles.sectionTitle}>Recent Project Achievements</h3>
-            <div style={styles.badgesGrid}>
-              {processedData.projectStats.recentBadges.slice(0, 5).map((badge, index) => (
-                <div key={index} style={styles.badgeCard}>
-                  <div 
-                    style={{
-                      ...styles.badgeIcon,
-                      backgroundColor: badgeDifficultyMap[badge.title]?.color || '#gray'
-                    }}
-                  >
-                    {badge.title}
-                  </div>
-                  <div style={styles.badgeInfo}>
-                    <h4 style={styles.badgeTitle}>PROJECT</h4>
-                    <p style={styles.badgeDescription}>{badge.description}</p>
-                    <span style={styles.badgeDate}>
-                      {new Date(badge.dateEarned).toLocaleDateString()}
-                    </span>
-                    <span style={styles.badgePoints}>
-                      +{badgeDifficultyMap[badge.title]?.points || 0} points
-                    </span>
+                <div style={styles.comparisonCard}>
+                  <h4 style={styles.comparisonTitle}>🚀 Projects</h4>
+                  <div style={styles.comparisonStats}>
+                    <div style={styles.comparisonStat}>
+                      <span style={styles.comparisonLabel}>Total Points</span>
+                      <span style={styles.comparisonValue}>{processedData.projectStats.totalPoints}</span>
+                    </div>
+                    <div style={styles.comparisonStat}>
+                      <span style={styles.comparisonLabel}>Total Badges</span>
+                      <span style={styles.comparisonValue}>{processedData.projectStats.totalBadges}</span>
+                    </div>
+                    <div style={styles.comparisonStat}>
+                      <span style={styles.comparisonLabel}>Completion Rate</span>
+                      <span style={styles.comparisonValue}>{processedData.projectStats.completionRate}%</span>
+                    </div>
+                    <div style={styles.comparisonStat}>
+                      <span style={styles.comparisonLabel}>Active Goals</span>
+                      <span style={styles.comparisonValue}>{processedData.projectStats.goals.inProgress}</span>
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </>
-      )}
+              </div>
 
-      {/* Comparison View */}
-      {selectedView === 'comparison' && (
-        <>
-          <div style={styles.comparisonHeader}>
-            <h3 style={styles.typeTitle}>⚖️ Courses vs Projects Comparison</h3>
-          </div>
+              <div style={styles.chartsGrid}>
+                <div style={styles.chartContainer}>
+                  <h3 style={styles.chartTitle}>Badge Distribution Comparison</h3>
+                  <div style={styles.chartWrapper}>
+                    <Bar
+                      data={{
+                        labels: ['Beginner', 'Intermediate', 'Advanced', 'Expert', 'Master'],
+                        datasets: [
+                          {
+                            label: 'Course Badges',
+                            data: Object.values(processedData.courseData),
+                            backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                            borderColor: '#667eea',
+                            borderWidth: 1
+                          },
+                          {
+                            label: 'Project Badges',
+                            data: Object.values(processedData.projectData),
+                            backgroundColor: 'rgba(239, 68, 68, 0.8)',
+                            borderColor: '#ef4444',
+                            borderWidth: 1
+                          }
+                        ]
+                      }}
+                      options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: true, position: 'top' }},
+                        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 }}}
+                      }}
+                    />
+                  </div>
+                </div>
 
-          <div style={styles.comparisonGrid}>
-            <div style={styles.comparisonCard}>
-              <h4 style={styles.comparisonTitle}>📚 Courses</h4>
-              <div style={styles.comparisonStats}>
-                <div style={styles.comparisonStat}>
-                  <span style={styles.comparisonLabel}>Total Points</span>
-                  <span style={styles.comparisonValue}>{processedData.courseStats.totalPoints}</span>
-                </div>
-                <div style={styles.comparisonStat}>
-                  <span style={styles.comparisonLabel}>Total Badges</span>
-                  <span style={styles.comparisonValue}>{processedData.courseStats.totalBadges}</span>
-                </div>
-                <div style={styles.comparisonStat}>
-                  <span style={styles.comparisonLabel}>Completion Rate</span>
-                  <span style={styles.comparisonValue}>{processedData.courseStats.completionRate}%</span>
-                </div>
-                <div style={styles.comparisonStat}>
-                  <span style={styles.comparisonLabel}>Active Goals</span>
-                  <span style={styles.comparisonValue}>{processedData.courseStats.goals.inProgress}</span>
+                <div style={styles.chartContainer}>
+                  <h3 style={styles.chartTitle}>Points Distribution</h3>
+                  <div style={styles.chartWrapper}>
+                    <Doughnut
+                      data={{
+                        labels: ['Course Points', 'Project Points'],
+                        datasets: [{
+                          data: [processedData.courseStats.totalPoints, processedData.projectStats.totalPoints],
+                          backgroundColor: ['#667eea', '#ef4444'],
+                          borderWidth: 2,
+                          borderColor: '#fff'
+                        }]
+                      }}
+                      options={doughnutOptions}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
+          </>
+        )}
 
-            <div style={styles.comparisonCard}>
-              <h4 style={styles.comparisonTitle}>🚀 Projects</h4>
-              <div style={styles.comparisonStats}>
-                <div style={styles.comparisonStat}>
-                  <span style={styles.comparisonLabel}>Total Points</span>
-                  <span style={styles.comparisonValue}>{processedData.projectStats.totalPoints}</span>
-                </div>
-                <div style={styles.comparisonStat}>
-                  <span style={styles.comparisonLabel}>Total Badges</span>
-                  <span style={styles.comparisonValue}>{processedData.projectStats.totalBadges}</span>
-                </div>
-                <div style={styles.comparisonStat}>
-                  <span style={styles.comparisonLabel}>Completion Rate</span>
-                  <span style={styles.comparisonValue}>{processedData.projectStats.completionRate}%</span>
-                </div>
-                <div style={styles.comparisonStat}>
-                  <span style={styles.comparisonLabel}>Active Goals</span>
-                  <span style={styles.comparisonValue}>{processedData.projectStats.goals.inProgress}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div style={styles.chartsGrid}>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Badge Distribution Comparison</h3>
-              <div style={styles.chartWrapper}>
-                <Bar
-                  data={{
-                    labels: ['Beginner', 'Intermediate', 'Advanced', 'Expert', 'Master'],
-                    datasets: [
-                      {
-                        label: 'Course Badges',
-                        data: Object.values(processedData.courseData),
-                        backgroundColor: 'rgba(52, 152, 219, 0.8)',
-                        borderColor: '#3498db',
-                        borderWidth: 1
-                      },
-                      {
-                        label: 'Project Badges',
-                        data: Object.values(processedData.projectData),
-                        backgroundColor: 'rgba(231, 76, 60, 0.8)',
-                        borderColor: '#e74c3c',
-                        borderWidth: 1
-                      }
-                    ]
+        {/* Difficulty Legend */}
+        <div style={styles.legendSection}>
+          <h4 style={styles.legendTitle}>Difficulty Levels</h4>
+          <div style={styles.legendGrid}>
+            {Object.entries(badgeDifficultyMap).map(([badge, info]) => (
+              <div key={badge} style={styles.legendItem}>
+                <div 
+                  style={{
+                    ...styles.legendColor,
+                    backgroundColor: info.color
                   }}
-                  options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: true, position: 'top' }},
-                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 }}}
-                  }}
-                />
+                ></div>
+                <span style={styles.legendText}>
+                  {info.difficulty} ({info.points} pts)
+                </span>
               </div>
-            </div>
-
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Points Distribution</h3>
-              <div style={styles.chartWrapper}>
-                <Doughnut
-                  data={{
-                    labels: ['Course Points', 'Project Points'],
-                    datasets: [{
-                      data: [processedData.courseStats.totalPoints, processedData.projectStats.totalPoints],
-                      backgroundColor: ['#3498db', '#e74c3c'],
-                      borderWidth: 2,
-                      borderColor: '#fff'
-                    }]
-                  }}
-                  options={doughnutOptions}
-                />
-              </div>
-            </div>
+            ))}
           </div>
-        </>
-      )}
-
-      {/* Difficulty Legend */}
-      <div style={styles.legendSection}>
-        <h4 style={styles.legendTitle}>Difficulty Levels</h4>
-        <div style={styles.legendGrid}>
-          {Object.entries(badgeDifficultyMap).map(([badge, info]) => (
-            <div key={badge} style={styles.legendItem}>
-              <div 
-                style={{
-                  ...styles.legendColor,
-                  backgroundColor: info.color
-                }}
-              ></div>
-              <span style={styles.legendText}>
-                {info.difficulty} ({info.points} pts)
-              </span>
-            </div>
-          ))}
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
-};
-
-// Enhanced Styles with new sections
-const styles = {
-  perfContainer: {
-    padding: '0',
-    backgroundColor: '#f8f9fa',
-    minHeight: '100vh'
-  },
-  
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '2rem',
-    backgroundColor: 'white',
-    padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    flexWrap: 'wrap',
-    gap: '1rem'
-  },
-  
-  title: {
-    color: '#2c3e50',
-    margin: 0,
-    fontSize: '2rem',
-    fontWeight: 'bold'
-  },
-  
-  headerControls: {
-    display: 'flex',
-    gap: '1rem',
-    alignItems: 'center',
-    flexWrap: 'wrap'
-  },
-  
-  viewSelector: {
-    display: 'flex',
-    backgroundColor: '#ecf0f1',
-    borderRadius: '8px',
-    padding: '4px'
-  },
-  
-  viewButton: {
-    padding: '0.5rem 1rem',
-    border: 'none',
-    backgroundColor: 'transparent',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '0.9rem',
-    fontWeight: '500',
-    color: '#7f8c8d',
-    transition: 'all 0.3s ease'
-  },
-  
-  viewButtonActive: {
-    backgroundColor: '#3498db',
-    color: 'white',
-    boxShadow: '0 2px 4px rgba(52, 152, 219, 0.3)'
-  },
-  
-  periodSelector: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem'
-  },
-  
-  label: {
-    color: '#7f8c8d',
-    fontWeight: '500'
-  },
-  
-  select: {
-    padding: '0.5rem 1rem',
-    borderRadius: '5px',
-    border: '1px solid #ddd',
-    fontSize: '1rem',
-    backgroundColor: 'white'
-  },
-  
-  typeHeader: {
-    backgroundColor: 'white',
-    padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    marginBottom: '2rem'
-  },
-  
-  typeTitle: {
-    color: '#2c3e50',
-    margin: '0 0 1rem 0',
-    fontSize: '1.5rem',
-    fontWeight: '600'
-  },
-  
-  typeStats: {
-    display: 'flex',
-    gap: '2rem',
-    flexWrap: 'wrap'
-  },
-  
-  comparisonHeader: {
-    backgroundColor: 'white',
-    padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    marginBottom: '2rem',
-    textAlign: 'center'
-  },
-  
-  comparisonGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-    gap: '2rem',
-    marginBottom: '2rem'
-  },
-  
-  comparisonCard: {
-    backgroundColor: 'white',
-    padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-  },
-  
-  comparisonTitle: {
-    color: '#2c3e50',
-    margin: '0 0 1rem 0',
-    fontSize: '1.2rem',
-    fontWeight: '600',
-    textAlign: 'center'
-  },
-  
-  comparisonStats: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.75rem'
-  },
-  
-  comparisonStat: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '0.5rem 0',
-    borderBottom: '1px solid #ecf0f1'
-  },
-  
-  comparisonLabel: {
-    color: '#7f8c8d',
-    fontSize: '0.9rem'
-  },
-  
-  comparisonValue: {
-    color: '#2c3e50',
-    fontSize: '1.1rem',
-    fontWeight: '600'
-  },
-  
-  summaryGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '1.5rem',
-    marginBottom: '2rem'
-  },
-  
-  summaryCard: {
-    backgroundColor: 'white',
-    padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    textAlign: 'center',
-    transition: 'transform 0.3s ease',
-    cursor: 'pointer'
-  },
-  
-  summaryTitle: {
-    color: '#7f8c8d',
-    fontSize: '0.9rem',
-    fontWeight: '500',
-    margin: '0 0 0.5rem 0',
-    textTransform: 'uppercase',
-    letterSpacing: '0.5px'
-  },
-  
-  summaryValue: {
-    color: '#2c3e50',
-    fontSize: '2.5rem',
-    fontWeight: 'bold',
-    margin: '0 0 0.25rem 0'
-  },
-  
-  summarySubtext: {
-    color: '#95a5a6',
-    fontSize: '0.8rem'
-  },
-  
-  chartsGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-    gap: '2rem',
-    marginBottom: '2rem'
-  },
-  
-  fullWidthChart: {
-    marginBottom: '2rem'
-  },
-  
-  chartContainer: {
-    backgroundColor: 'white',
-    padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-  },
-  
-  chartTitle: {
-    color: '#2c3e50',
-    marginBottom: '1rem',
-    fontSize: '1.2rem',
-    fontWeight: '600'
-  },
-  
-  chartWrapper: {
-    height: '300px',
-    position: 'relative'
-  },
-  
-  recentBadgesSection: {
-    backgroundColor: 'white',
-    padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    marginBottom: '2rem'
-  },
-  
-  sectionTitle: {
-    color: '#2c3e50',
-    marginBottom: '1rem',
-    fontSize: '1.3rem',
-    fontWeight: '600'
-  },
-  
-  badgesGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-    gap: '1rem'
-  },
-  
-  badgeCard: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem',
-    padding: '1rem',
-    backgroundColor: '#f8f9fa',
-    borderRadius: '8px',
-    border: '1px solid #e9ecef'
-  },
-  
-  badgeIcon: {
-    width: '50px',
-    height: '50px',
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: '0.8rem',
-    flexShrink: 0
-  },
-  
-  badgeInfo: {
-    flex: 1
-  },
-  
-  badgeTitle: {
-    margin: '0 0 0.25rem 0',
-    color: '#2c3e50',
-    fontSize: '0.9rem',
-    fontWeight: '600'
-  },
-  
-  badgeDescription: {
-    margin: '0 0 0.5rem 0',
-    color: '#7f8c8d',
-    fontSize: '0.8rem',
-    lineHeight: '1.4'
-  },
-  
-  badgeDate: {
-    color: '#95a5a6',
-    fontSize: '0.75rem',
-    marginRight: '1rem'
-  },
-  
-  badgePoints: {
-    color: '#27ae60',
-    fontSize: '0.75rem',
-    fontWeight: '600'
-  },
-  
-  legendSection: {
-    backgroundColor: 'white',
-    padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-  },
-  
-  legendTitle: {
-    color: '#2c3e50',
-    marginBottom: '1rem',
-    fontSize: '1.1rem',
-    fontWeight: '600'
-  },
-  
-  legendGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-    gap: '0.75rem'
-  },
-  
-  legendItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem'
-  },
-  
-  legendColor: {
-    width: '16px',
-    height: '16px',
-    borderRadius: '3px'
-  },
-  
-  legendText: {
-    color: '#7f8c8d',
-    fontSize: '0.9rem'
-  },
-  
-  loadingContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '400px',
-    color: '#7f8c8d'
-  },
-  
-  spinner: {
-    width: '40px',
-    height: '40px',
-    border: '4px solid #f3f3f3',
-    borderTop: '4px solid #3498db',
-    borderRadius: '50%',
-    animation: 'spin 1s linear infinite',
-    marginBottom: '1rem'
-  },
-  
-  errorContainer: {
-    textAlign: 'center',
-    padding: '2rem',
-    backgroundColor: 'white',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-  },
-  
-  retryButton: {
-    backgroundColor: '#3498db',
-    color: 'white',
-    border: 'none',
-    padding: '0.75rem 1.5rem',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    fontSize: '1rem',
-    marginTop: '1rem'
-  },
-  
-  noDataContainer: {
-    textAlign: 'center',
-    padding: '3rem',
-    backgroundColor: 'white',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    color: '#7f8c8d'
-  }
 };
 
 export default Perf;

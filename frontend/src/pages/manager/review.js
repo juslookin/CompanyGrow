@@ -1,7 +1,19 @@
-// review.js
 import React, { useState, useEffect } from 'react';
 import { Bar, Line, Doughnut } from 'react-chartjs-2';
 import { loadStripe } from '@stripe/stripe-js';
+import { 
+  Users, 
+  TrendingUp, 
+  Award, 
+  DollarSign, 
+  Calendar, 
+  Search,
+  ArrowLeft,
+  Eye,
+  CheckCircle,
+  Clock,
+  AlertCircle
+} from 'lucide-react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -69,7 +81,6 @@ const Review = () => {
     }
   };
 
-
   const fetchEmployeePerformance = async (employeeId) => {
     try {
       setLoading(true);
@@ -103,11 +114,11 @@ const Review = () => {
 
   // Badge difficulty mapping with bonus values
   const badgeDifficultyMap = {
-    'Green': { difficulty: 'Beginner', color: '#27ae60', points: 10, bonusValue: 25 },
-    'Cyan': { difficulty: 'Intermediate', color: '#17a2b8', points: 20, bonusValue: 50 },
-    'Blue': { difficulty: 'Advanced', color: '#007bff', points: 30, bonusValue: 75 },
-    'Purple': { difficulty: 'Expert', color: '#6f42c1', points: 40, bonusValue: 100 },
-    'Red': { difficulty: 'Master', color: '#dc3545', points: 50, bonusValue: 150 }
+    'Green': { difficulty: 'Beginner', color: '#10b981', points: 10, bonusValue: 25 },
+    'Cyan': { difficulty: 'Intermediate', color: '#06b6d4', points: 20, bonusValue: 50 },
+    'Blue': { difficulty: 'Advanced', color: '#3b82f6', points: 30, bonusValue: 75 },
+    'Purple': { difficulty: 'Expert', color: '#8b5cf6', points: 40, bonusValue: 100 },
+    'Red': { difficulty: 'Master', color: '#ef4444', points: 50, bonusValue: 150 }
   };
 
   // Process performance data
@@ -312,15 +323,6 @@ const Review = () => {
       const session = await response.json();
       window.location.href = session.url;
       
-      // // Redirect to Stripe Checkout
-      // const result = await stripe.redirectToCheckout({
-      //   sessionId: session.id,
-      // });
-
-      // if (result.error) {
-      //   throw new Error(result.error.message);
-      // }
-      
     } catch (error) {
       console.error('Payment error:', error);
       alert('Payment failed: ' + error.message);
@@ -395,21 +397,806 @@ const Review = () => {
     }
   };
 
+  // Updated styles to match dashboard
+  const styles = {
+    container: {
+      backgroundColor: 'white',
+      borderRadius: '12px',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+      overflow: 'hidden'
+    },
+    
+    header: {
+      backgroundColor: '#667eea',
+      color: 'white',
+      padding: '32px',
+      textAlign: 'center'
+    },
+    
+    title: {
+      fontSize: '32px',
+      fontWeight: 'bold',
+      marginBottom: '8px',
+      margin: 0
+    },
+    
+    subtitle: {
+      fontSize: '18px',
+      opacity: 0.9,
+      margin: 0
+    },
+    
+    content: {
+      padding: '32px'
+    },
+    
+    searchContainer: {
+      marginBottom: '24px',
+      position: 'relative'
+    },
+    
+    searchInput: {
+      width: '100%',
+      padding: '12px 16px 12px 48px',
+      borderRadius: '8px',
+      border: '1px solid #e5e7eb',
+      fontSize: '16px',
+      outline: 'none',
+      transition: 'border-color 0.3s ease',
+      backgroundColor: 'white'
+    },
+    
+    searchIcon: {
+      position: 'absolute',
+      left: '16px',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      color: '#6b7280'
+    },
+    
+    employeeGrid: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+      gap: '24px'
+    },
+    
+    employeeCard: {
+      backgroundColor: '#f9fafb',
+      border: '1px solid #e5e7eb',
+      borderRadius: '12px',
+      padding: '24px',
+      cursor: 'pointer',
+      transition: 'all 0.3s ease'
+    },
+    
+    employeeCardHover: {
+      transform: 'translateY(-2px)',
+      boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+    },
+    
+    employeeHeader: {
+      display: 'flex',
+      alignItems: 'center',
+      marginBottom: '16px'
+    },
+    
+    employeeAvatar: {
+      width: '60px',
+      height: '60px',
+      borderRadius: '50%',
+      backgroundColor: '#667eea',
+      color: 'white',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '20px',
+      fontWeight: 'bold',
+      marginRight: '16px',
+      flexShrink: 0
+    },
+    
+    employeeInfo: {
+      flex: 1
+    },
+    
+    nameAndRole: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      marginBottom: '4px'
+    },
+    
+    employeeName: {
+      margin: 0,
+      color: '#1f2937',
+      fontSize: '20px',
+      fontWeight: '600'
+    },
+    
+    roleBadge: {
+      fontSize: '12px',
+      padding: '4px 8px',
+      borderRadius: '12px',
+      color: 'white',
+      fontWeight: '600',
+      textTransform: 'uppercase'
+    },
+    
+    employeePosition: {
+      margin: '0 0 4px 0',
+      color: '#6b7280',
+      fontSize: '14px'
+    },
+    
+    employeeDepartment: {
+      margin: 0,
+      color: '#9ca3af',
+      fontSize: '14px',
+      fontWeight: '500'
+    },
+    
+    employeeStats: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2, 1fr)',
+      gap: '16px',
+      marginTop: '16px',
+      paddingTop: '16px',
+      borderTop: '1px solid #e5e7eb'
+    },
+    
+    statItem: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      padding: '12px',
+      backgroundColor: 'white',
+      borderRadius: '8px',
+      border: '1px solid #e5e7eb'
+    },
+    
+    statIcon: {
+      color: '#667eea'
+    },
+    
+    statContent: {
+      flex: 1
+    },
+    
+    statLabel: {
+      fontSize: '12px',
+      fontWeight: '500',
+      color: '#6b7280',
+      textTransform: 'uppercase',
+      letterSpacing: '0.5px'
+    },
+    
+    statValue: {
+      fontSize: '14px',
+      fontWeight: '600',
+      color: '#1f2937'
+    },
+    
+    viewButton: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '8px',
+      marginTop: '16px',
+      padding: '12px 16px',
+      backgroundColor: '#667eea',
+      color: 'white',
+      borderRadius: '8px',
+      fontSize: '14px',
+      fontWeight: '600',
+      transition: 'background-color 0.3s ease'
+    },
+    
+    // Performance view styles
+    performanceHeader: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: '32px',
+      flexWrap: 'wrap',
+      gap: '16px'
+    },
+    
+    employeeHeaderInfo: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '16px'
+    },
+    
+    backButton: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      backgroundColor: '#6b7280',
+      color: 'white',
+      border: 'none',
+      padding: '8px 16px',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      fontSize: '14px',
+      fontWeight: '500',
+      transition: 'background-color 0.3s ease'
+    },
+    
+    selectedEmployeeInfo: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '16px'
+    },
+    
+    selectedEmployeeName: {
+      margin: 0,
+      color: '#1f2937',
+      fontSize: '24px',
+      fontWeight: 'bold'
+    },
+    
+    selectedEmployeeDetails: {
+      margin: 0,
+      color: '#6b7280',
+      fontSize: '16px'
+    },
+    
+    headerControls: {
+      display: 'flex',
+      gap: '16px',
+      alignItems: 'center',
+      flexWrap: 'wrap'
+    },
+    
+    viewSelector: {
+      display: 'flex',
+      backgroundColor: '#f3f4f6',
+      borderRadius: '8px',
+      padding: '4px'
+    },
+    
+    viewButton: {
+      padding: '8px 16px',
+      border: 'none',
+      backgroundColor: 'transparent',
+      borderRadius: '6px',
+      cursor: 'pointer',
+      fontSize: '14px',
+      fontWeight: '500',
+      color: '#6b7280',
+      transition: 'all 0.3s ease'
+    },
+    
+    viewButtonActive: {
+      backgroundColor: '#667eea',
+      color: 'white',
+      boxShadow: '0 2px 4px rgba(102, 126, 234, 0.3)'
+    },
+    
+    periodSelector: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px'
+    },
+    
+    label: {
+      color: '#6b7280',
+      fontWeight: '500',
+      fontSize: '14px'
+    },
+    
+    select: {
+      padding: '8px 12px',
+      borderRadius: '6px',
+      border: '1px solid #e5e7eb',
+      fontSize: '14px',
+      backgroundColor: 'white',
+      color: '#1f2937'
+    },
+    
+    summaryGrid: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+      gap: '24px',
+      marginBottom: '32px'
+    },
+    
+    summaryCard: {
+      backgroundColor: '#f9fafb',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid #e5e7eb',
+      textAlign: 'center'
+    },
+    
+    summaryIcon: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '48px',
+      height: '48px',
+      backgroundColor: '#667eea',
+      color: 'white',
+      borderRadius: '12px',
+      margin: '0 auto 16px auto'
+    },
+    
+    summaryTitle: {
+      color: '#6b7280',
+      fontSize: '14px',
+      fontWeight: '500',
+      margin: '0 0 8px 0',
+      textTransform: 'uppercase',
+      letterSpacing: '0.5px'
+    },
+    
+    summaryValue: {
+      color: '#1f2937',
+      fontSize: '32px',
+      fontWeight: 'bold',
+      margin: '0 0 4px 0'
+    },
+    
+    summarySubtext: {
+      color: '#9ca3af',
+      fontSize: '14px'
+    },
+    
+    chartsGrid: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+      gap: '24px',
+      marginBottom: '32px'
+    },
+    
+    chartContainer: {
+      backgroundColor: '#f9fafb',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid #e5e7eb'
+    },
+    
+    chartTitle: {
+      color: '#1f2937',
+      marginBottom: '16px',
+      fontSize: '18px',
+      fontWeight: '600'
+    },
+    
+    chartWrapper: {
+      height: '300px',
+      position: 'relative'
+    },
+    
+    fullWidthChart: {
+      marginBottom: '32px'
+    },
+    
+    typeHeader: {
+      backgroundColor: '#f9fafb',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid #e5e7eb',
+      marginBottom: '32px'
+    },
+    
+    typeTitle: {
+      color: '#1f2937',
+      margin: '0 0 16px 0',
+      fontSize: '24px',
+      fontWeight: '600'
+    },
+    
+    typeStats: {
+      display: 'flex',
+      gap: '32px',
+      flexWrap: 'wrap'
+    },
+    
+    recentBadgesSection: {
+      backgroundColor: '#f9fafb',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid #e5e7eb',
+      marginBottom: '32px'
+    },
+    
+    sectionTitle: {
+      color: '#1f2937',
+      marginBottom: '16px',
+      fontSize: '20px',
+      fontWeight: '600'
+    },
+    
+    badgesGrid: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+      gap: '16px'
+    },
+    
+    badgeCard: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '16px',
+      padding: '16px',
+      backgroundColor: 'white',
+      borderRadius: '8px',
+      border: '1px solid #e5e7eb'
+    },
+    
+    badgeIcon: {
+      width: '50px',
+      height: '50px',
+      borderRadius: '50%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: 'white',
+      fontWeight: 'bold',
+      fontSize: '12px',
+      flexShrink: 0
+    },
+    
+    badgeInfo: {
+      flex: 1
+    },
+    
+    badgeTitle: {
+      margin: '0 0 4px 0',
+      color: '#1f2937',
+      fontSize: '14px',
+      fontWeight: '600'
+    },
+    
+    badgeDescription: {
+      margin: '0 0 8px 0',
+      color: '#6b7280',
+      fontSize: '12px',
+      lineHeight: '1.4'
+    },
+    
+    badgeDate: {
+      color: '#9ca3af',
+      fontSize: '12px',
+      marginRight: '16px'
+    },
+    
+    badgePoints: {
+      color: '#10b981',
+      fontSize: '12px',
+      fontWeight: '600'
+    },
+    
+    // Bonus-specific styles
+    bonusHeader: {
+      backgroundColor: '#f9fafb',
+      padding: '24px',
+      borderRadius: '12px',
+      border: '1px solid #e5e7eb',
+      marginBottom: '32px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      gap: '16px'
+    },
+    
+    bonusControls: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '16px',
+      flexWrap: 'wrap'
+    },
+    
+    selectedInfo: {
+      color: '#6b7280',
+      fontSize: '16px',
+      fontWeight: '500'
+    },
+    
+    bonusButton: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      backgroundColor: '#10b981',
+      color: 'white',
+      border: 'none',
+      padding: '12px 24px',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      fontSize: '16px',
+      fontWeight: '600',
+      transition: 'all 0.3s ease',
+      boxShadow: '0 2px 4px rgba(16, 185, 129, 0.3)'
+    },
+    
+    bonusButtonDisabled: {
+      backgroundColor: '#9ca3af',
+      cursor: 'not-allowed',
+      boxShadow: 'none'
+    },
+    
+    badgeSelectionGrid: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
+      gap: '24px'
+    },
+    
+    selectableBadgeCard: {
+      backgroundColor: '#f9fafb',
+      borderRadius: '12px',
+      padding: '24px',
+      cursor: 'pointer',
+      transition: 'all 0.3s ease',
+      border: '2px solid #e5e7eb',
+      position: 'relative'
+    },
+    
+    selectedBadgeCard: {
+      borderColor: '#10b981',
+      backgroundColor: '#f0fdf4',
+      transform: 'translateY(-2px)',
+      boxShadow: '0 4px 12px rgba(16, 185, 129, 0.2)'
+    },
+    
+    badgeCardHeader: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '16px',
+      marginBottom: '16px'
+    },
+    
+    badgeCardInfo: {
+      flex: 1
+    },
+    
+    badgeCardTitle: {
+      margin: '0 0 4px 0',
+      color: '#1f2937',
+      fontSize: '14px',
+      fontWeight: '600'
+    },
+    
+    badgeCardDescription: {
+      margin: 0,
+      color: '#6b7280',
+      fontSize: '12px',
+      lineHeight: '1.4'
+    },
+    
+    bonusValueContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      textAlign: 'center'
+    },
+    
+    bonusValue: {
+      fontSize: '24px',
+      fontWeight: 'bold',
+      color: '#10b981'
+    },
+    
+    bonusLabel: {
+      fontSize: '12px',
+      color: '#9ca3af',
+      textTransform: 'uppercase',
+      letterSpacing: '0.5px'
+    },
+    
+    badgeCardFooter: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingTop: '16px',
+      borderTop: '1px solid #e5e7eb'
+    },
+    
+    badgePeriod: {
+      color: '#6b7280',
+      fontSize: '12px',
+      fontWeight: '500'
+    },
+    
+    selectedIndicator: {
+      position: 'absolute',
+      top: '12px',
+      right: '12px',
+      backgroundColor: '#10b981',
+      color: 'white',
+      borderRadius: '50%',
+      width: '24px',
+      height: '24px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '12px',
+      fontWeight: 'bold'
+    },
+    
+    // Modal styles
+    modalOverlay: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1000
+    },
+    
+    modal: {
+      backgroundColor: 'white',
+      borderRadius: '12px',
+      padding: '32px',
+      maxWidth: '500px',
+      width: '90%',
+      maxHeight: '80vh',
+      overflow: 'auto'
+    },
+    
+    modalTitle: {
+      margin: '0 0 24px 0',
+      color: '#1f2937',
+      fontSize: '24px',
+      fontWeight: 'bold'
+    },
+    
+    modalContent: {
+      marginBottom: '32px'
+    },
+    
+    selectedBadgesList: {
+      marginTop: '16px',
+      maxHeight: '200px',
+      overflow: 'auto'
+    },
+    
+    modalBadgeItem: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      padding: '8px 0',
+      borderBottom: '1px solid #e5e7eb'
+    },
+    
+    modalBadgeIcon: {
+      width: '24px',
+      height: '24px',
+      borderRadius: '50%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: 'white',
+      fontSize: '10px',
+      fontWeight: 'bold'
+    },
+    
+    modalActions: {
+      display: 'flex',
+      gap: '16px',
+      justifyContent: 'flex-end'
+    },
+    
+    cancelButton: {
+      backgroundColor: '#6b7280',
+      color: 'white',
+      border: 'none',
+      padding: '12px 24px',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      fontSize: '16px',
+      fontWeight: '500'
+    },
+    
+    confirmButton: {
+      backgroundColor: '#6772e5',
+      color: 'white',
+      border: 'none',
+      padding: '12px 24px',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      fontSize: '16px',
+      fontWeight: '500',
+      transition: 'background-color 0.3s ease'
+    },
+    
+    loadingContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '64px 32px',
+      backgroundColor: 'white',
+      borderRadius: '12px',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+    },
+    
+    loadingTitle: {
+      fontSize: '24px',
+      color: '#1f2937',
+      marginBottom: '16px'
+    },
+    
+    loadingSpinner: {
+      width: '40px',
+      height: '40px',
+      border: '4px solid #e5e7eb',
+      borderTop: '4px solid #667eea',
+      borderRadius: '50%',
+      animation: 'spin 1s linear infinite',
+      margin: '0 auto'
+    },
+    
+    errorContainer: {
+      textAlign: 'center',
+      padding: '64px 32px',
+      backgroundColor: 'white',
+      borderRadius: '12px',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+    },
+    
+    retryButton: {
+      backgroundColor: '#667eea',
+      color: 'white',
+      border: 'none',
+      padding: '12px 24px',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      fontSize: '16px',
+      marginTop: '16px'
+    },
+    
+    noDataContainer: {
+      textAlign: 'center',
+      padding: '64px 32px',
+      backgroundColor: 'white',
+      borderRadius: '12px',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+      color: '#6b7280'
+    },
+    
+    noResults: {
+      textAlign: 'center',
+      padding: '48px 32px',
+      color: '#6b7280',
+      backgroundColor: '#f9fafb',
+      borderRadius: '8px',
+      border: '1px solid #e5e7eb'
+    },
+    
+    noBadgesMessage: {
+      textAlign: 'center',
+      padding: '48px 32px',
+      backgroundColor: '#f9fafb',
+      borderRadius: '8px',
+      border: '2px dashed #e5e7eb',
+      color: '#6b7280'
+    }
+  };
+
   if (loading && !selectedEmployee) {
     return (
-      <div style={styles.loadingContainer}>
-        <div style={styles.spinner}></div>
-        <p>Loading employees...</p>
+      <div style={styles.container}>
+        <div style={styles.loadingContainer}>
+          <div style={styles.loadingSpinner}></div>
+          <h2 style={styles.loadingTitle}>Loading employees...</h2>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div style={styles.errorContainer}>
-        <h3>Error Loading Data</h3>
-        <p>{error}</p>
-        <button onClick={fetchEmployees} style={styles.retryButton}>Retry</button>
+      <div style={styles.container}>
+        <div style={styles.errorContainer}>
+          <h3>Error Loading Data</h3>
+          <p>{error}</p>
+          <button onClick={fetchEmployees} style={styles.retryButton}>Retry</button>
+        </div>
       </div>
     );
   }
@@ -417,10 +1204,17 @@ const Review = () => {
   // Employee List View
   if (!selectedEmployee) {
     return (
-      <div style={styles.reviewContainer}>
+      <div style={styles.container}>
+        {/* Header */}
         <div style={styles.header}>
-          <h2 style={styles.title}>Employee Performance Review</h2>
+          <h1 style={styles.title}>Performance Review</h1>
+          <p style={styles.subtitle}>Review and manage employee performance metrics</p>
+        </div>
+
+        <div style={styles.content}>
+          {/* Search */}
           <div style={styles.searchContainer}>
+            <Search size={20} style={styles.searchIcon} />
             <input
               type="text"
               placeholder="Search employees by name, department, or position..."
@@ -429,61 +1223,69 @@ const Review = () => {
               style={styles.searchInput}
             />
           </div>
-        </div>
 
-        <div style={styles.employeeGrid}>
-          {filteredEmployees.map((employee) => (
-            <div 
-              key={employee._id} 
-              style={styles.employeeCard}
-              onClick={() => handleEmployeeSelect(employee)}
-            >
-              <div style={styles.employeeHeader}>
-                <div style={styles.employeeAvatar}>
-                  {employee.name.split(' ').map(n => n[0]).join('').toUpperCase()}
-                </div>
-                <div style={styles.employeeInfo}>
-                  <div style={styles.nameAndRole}>
-                    <h3 style={styles.employeeName}>{employee.name}</h3>
-                    <span style={{
-                      ...styles.roleBadge,
-                      backgroundColor: employee.role === 'admin' ? '#e74c3c' : 
-                                      employee.role === 'manager' ? '#f39c12' : '#27ae60'
-                    }}>
-                      {employee.role.toUpperCase()}
-                    </span>
+          {/* Employee Grid */}
+          <div style={styles.employeeGrid}>
+            {filteredEmployees.map((employee) => (
+              <div 
+                key={employee._id} 
+                style={styles.employeeCard}
+                onClick={() => handleEmployeeSelect(employee)}
+              >
+                <div style={styles.employeeHeader}>
+                  <div style={styles.employeeAvatar}>
+                    {employee.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                   </div>
-                  <p style={styles.employeePosition}>{employee.position}</p>
-                  <p style={styles.employeeDepartment}>{employee.department}</p>
+                  <div style={styles.employeeInfo}>
+                    <div style={styles.nameAndRole}>
+                      <h3 style={styles.employeeName}>{employee.name}</h3>
+                      <span style={{
+                        ...styles.roleBadge,
+                        backgroundColor: employee.role === 'admin' ? '#ef4444' : 
+                                        employee.role === 'manager' ? '#f59e0b' : '#10b981'
+                      }}>
+                        {employee.role.toUpperCase()}
+                      </span>
+                    </div>
+                    <p style={styles.employeePosition}>{employee.position}</p>
+                    <p style={styles.employeeDepartment}>{employee.department}</p>
+                  </div>
+                </div>
+                
+                <div style={styles.employeeStats}>
+                  <div style={styles.statItem}>
+                    <Calendar size={16} style={styles.statIcon} />
+                    <div style={styles.statContent}>
+                      <div style={styles.statLabel}>Experience</div>
+                      <div style={styles.statValue}>{employee.experience} years</div>
+                    </div>
+                  </div>
+                  <div style={styles.statItem}>
+                    <Clock size={16} style={styles.statIcon} />
+                    <div style={styles.statContent}>
+                      <div style={styles.statLabel}>Join Date</div>
+                      <div style={styles.statValue}>
+                        {new Date(employee.joinDate).toLocaleDateString()}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div style={styles.viewButton}>
+                  <Eye size={16} />
+                  View Performance
                 </div>
               </div>
-              
-              <div style={styles.employeeStats}>
-                <div style={styles.statItem}>
-                  <span style={styles.statLabel}>Experience</span>
-                  <span style={styles.statValue}>{employee.experience} years</span>
-                </div>
-                <div style={styles.statItem}>
-                  <span style={styles.statLabel}>Join Date</span>
-                  <span style={styles.statValue}>
-                    {new Date(employee.joinDate).toLocaleDateString()}
-                  </span>
-                </div>
-              </div>
-              
-              <div style={styles.viewButton}>
-                View Performance →
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {filteredEmployees.length === 0 && (
-          <div style={styles.noResults}>
-            <h3>No employees found</h3>
-            <p>Try adjusting your search criteria</p>
+            ))}
           </div>
-        )}
+
+          {filteredEmployees.length === 0 && (
+            <div style={styles.noResults}>
+              <h3>No employees found</h3>
+              <p>Try adjusting your search criteria</p>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
@@ -491,21 +1293,28 @@ const Review = () => {
   // Employee Performance View
   if (loading) {
     return (
-      <div style={styles.loadingContainer}>
-        <div style={styles.spinner}></div>
-        <p>Loading performance data...</p>
+      <div style={styles.container}>
+        <div style={styles.loadingContainer}>
+          <div style={styles.loadingSpinner}></div>
+          <h2 style={styles.loadingTitle}>Loading performance data...</h2>
+        </div>
       </div>
     );
   }
 
   if (!performanceData || performanceData.length === 0) {
     return (
-      <div style={styles.noDataContainer}>
-        <button onClick={handleBackToList} style={styles.backButton}>
-          ← Back to Employee List
-        </button>
-        <h3>No Performance Data Available</h3>
-        <p>{selectedEmployee.name} hasn't completed any performance reviews yet.</p>
+      <div style={styles.container}>
+        <div style={styles.content}>
+          <button onClick={handleBackToList} style={styles.backButton}>
+            <ArrowLeft size={16} />
+            Back to Employee List
+          </button>
+          <div style={styles.noDataContainer}>
+            <h3>No Performance Data Available</h3>
+            <p>{selectedEmployee.name} hasn't completed any performance reviews yet.</p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -514,1119 +1323,434 @@ const Review = () => {
   const periods = [...new Set(performanceData.map(metric => metric.period))];
 
   return (
-    <div style={styles.reviewContainer}>
-      {/* Header with Employee Info and Navigation */}
+    <div style={styles.container}>
+      {/* Header */}
       <div style={styles.header}>
-        <div style={styles.employeeHeaderInfo}>
-          <button onClick={handleBackToList} style={styles.backButton}>
-            ← Back to Employee List
-          </button>
-          <div style={styles.selectedEmployeeInfo}>
-            <div style={styles.employeeAvatar}>
-              {selectedEmployee.name.split(' ').map(n => n[0]).join('').toUpperCase()}
-            </div>
-            <div>
-              <h2 style={styles.selectedEmployeeName}>{selectedEmployee.name}</h2>
-              <p style={styles.selectedEmployeeDetails}>
-                {selectedEmployee.position} • {selectedEmployee.department}
-              </p>
-            </div>
-          </div>
-        </div>
-        
-        <div style={styles.headerControls}>
-          <div style={styles.viewSelector}>
-            <button 
-              onClick={() => setSelectedView('overview')}
-              style={{
-                ...styles.viewButton,
-                ...(selectedView === 'overview' ? styles.viewButtonActive : {})
-              }}
-            >
-              Overview
-            </button>
-            <button 
-              onClick={() => setSelectedView('badges')}
-              style={{
-                ...styles.viewButton,
-                ...(selectedView === 'badges' ? styles.viewButtonActive : {})
-              }}
-            >
-              Badge Bonus
-            </button>
-            <button 
-              onClick={() => setSelectedView('courses')}
-              style={{
-                ...styles.viewButton,
-                ...(selectedView === 'courses' ? styles.viewButtonActive : {})
-              }}
-            >
-              Courses Analytics
-            </button>
-            <button 
-              onClick={() => setSelectedView('projects')}
-              style={{
-                ...styles.viewButton,
-                ...(selectedView === 'projects' ? styles.viewButtonActive : {})
-              }}
-            >
-              Projects Analytics
-            </button>
-          </div>
-          <div style={styles.periodSelector}>
-            <label htmlFor="period-select" style={styles.label}>Period: </label>
-            <select
-              id="period-select"
-              value={selectedPeriod}
-              onChange={(e) => setSelectedPeriod(e.target.value)}
-              style={styles.select}
-            >
-              <option value="all">All Periods</option>
-              {periods.map(period => (
-                <option key={period} value={period}>{period}</option>
-              ))}
-            </select>
-          </div>
-        </div>
+        <h1 style={styles.title}>Performance Analytics</h1>
+        <p style={styles.subtitle}>Detailed performance insights and bonus management</p>
       </div>
 
-      {/* Overview View */}
-      {selectedView === 'overview' && (
-        <>
-          <div style={styles.summaryGrid}>
-            <div style={styles.summaryCard}>
-              <h3 style={styles.summaryTitle}>Course Points</h3>
-              <p style={styles.summaryValue}>{processedData.courseStats.totalPoints}</p>
-              <span style={styles.summarySubtext}>{processedData.courseStats.totalBadges} badges earned</span>
-            </div>
-            <div style={styles.summaryCard}>
-              <h3 style={styles.summaryTitle}>Project Points</h3>
-              <p style={styles.summaryValue}>{processedData.projectStats.totalPoints}</p>
-              <span style={styles.summarySubtext}>{processedData.projectStats.totalBadges} badges earned</span>
-            </div>
-            <div style={styles.summaryCard}>
-              <h3 style={styles.summaryTitle}>Course Completion</h3>
-              <p style={styles.summaryValue}>{processedData.courseStats.completionRate}%</p>
-              <span style={styles.summarySubtext}>{processedData.courseStats.goals.completed} of {processedData.courseStats.goals.total} goals</span>
-            </div>
-            <div style={styles.summaryCard}>
-              <h3 style={styles.summaryTitle}>Total Bonus Value</h3>
-              <p style={styles.summaryValue}>${processedData.allBadges.reduce((total, badge) => total + badge.bonusValue, 0)}</p>
-              <span style={styles.summarySubtext}>Available for conversion</span>
-            </div>
-          </div>
-
-          <div style={styles.chartsGrid}>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Course Badges Overview</h3>
-              <div style={styles.chartWrapper}>
-                <Bar
-                  data={createTypeSpecificChart(processedData.courseData, 'Course')}
-                  options={chartOptions}
-                />
+      <div style={styles.content}>
+        {/* Performance Header */}
+        <div style={styles.performanceHeader}>
+          <div style={styles.employeeHeaderInfo}>
+            <button onClick={handleBackToList} style={styles.backButton}>
+              <ArrowLeft size={16} />
+              Back to Employee List
+            </button>
+            <div style={styles.selectedEmployeeInfo}>
+              <div style={styles.employeeAvatar}>
+                {selectedEmployee.name.split(' ').map(n => n[0]).join('').toUpperCase()}
               </div>
-            </div>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Project Badges Overview</h3>
-              <div style={styles.chartWrapper}>
-                <Bar
-                  data={createTypeSpecificChart(processedData.projectData, 'Project')}
-                  options={chartOptions}
-                />
+              <div>
+                <h2 style={styles.selectedEmployeeName}>{selectedEmployee.name}</h2>
+                <p style={styles.selectedEmployeeDetails}>
+                  {selectedEmployee.position} • {selectedEmployee.department}
+                </p>
               </div>
             </div>
           </div>
-        </>
-      )}
-
-      {/* Courses Analytics View */}
-      {selectedView === 'courses' && (
-        <>
-          <div style={styles.typeHeader}>
-            <h3 style={styles.typeTitle}>📚 Courses Performance Analytics</h3>
-            <div style={styles.typeStats}>
-              <span>Total Points: <strong>{processedData.courseStats.totalPoints}</strong></span>
-              <span>Total Badges: <strong>{processedData.courseStats.totalBadges}</strong></span>
-              <span>Completion Rate: <strong>{processedData.courseStats.completionRate}%</strong></span>
-            </div>
-          </div>
-
-          <div style={styles.chartsGrid}>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Course Badges by Difficulty</h3>
-              <div style={styles.chartWrapper}>
-                <Bar
-                  data={createTypeSpecificChart(processedData.courseData, 'Course')}
-                  options={chartOptions}
-                />
-              </div>
-            </div>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Course Goal Status</h3>
-              <div style={styles.chartWrapper}>
-                <Doughnut
-                  data={createTypeGoalChart(processedData.courseStats.goals, 'Course')}
-                  options={doughnutOptions}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div style={styles.fullWidthChart}>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Course Progress Over Time</h3>
-              <div style={styles.chartWrapper}>
-                <Line
-                  data={createTypeTimeChart(processedData.courseStats.timeBasedData, 'Course')}
-                  options={lineChartOptions}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div style={styles.recentBadgesSection}>
-            <h3 style={styles.sectionTitle}>Recent Course Achievements</h3>
-            <div style={styles.badgesGrid}>
-              {processedData.courseStats.recentBadges.slice(0, 5).map((badge, index) => (
-                <div key={index} style={styles.badgeCard}>
-                  <div 
-                    style={{
-                      ...styles.badgeIcon,
-                      backgroundColor: badgeDifficultyMap[badge.title]?.color || '#gray'
-                    }}
-                  >
-                    {badge.title}
-                  </div>
-                  <div style={styles.badgeInfo}>
-                    <h4 style={styles.badgeTitle}>COURSE</h4>
-                    <p style={styles.badgeDescription}>{badge.description}</p>
-                    <span style={styles.badgeDate}>
-                      {new Date(badge.dateEarned).toLocaleDateString()}
-                    </span>
-                    <span style={styles.badgePoints}>
-                      +{badgeDifficultyMap[badge.title]?.points || 0} points
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </>
-      )}
-
-      {/* Projects Analytics View */}
-      {selectedView === 'projects' && (
-        <>
-          <div style={styles.typeHeader}>
-            <h3 style={styles.typeTitle}>🚀 Projects Performance Analytics</h3>
-            <div style={styles.typeStats}>
-              <span>Total Points: <strong>{processedData.projectStats.totalPoints}</strong></span>
-              <span>Total Badges: <strong>{processedData.projectStats.totalBadges}</strong></span>
-              <span>Completion Rate: <strong>{processedData.projectStats.completionRate}%</strong></span>
-            </div>
-          </div>
-
-          <div style={styles.chartsGrid}>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Project Badges by Difficulty</h3>
-              <div style={styles.chartWrapper}>
-                <Bar
-                  data={createTypeSpecificChart(processedData.projectData, 'Project')}
-                  options={chartOptions}
-                />
-              </div>
-            </div>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Project Goal Status</h3>
-              <div style={styles.chartWrapper}>
-                <Doughnut
-                  data={createTypeGoalChart(processedData.projectStats.goals, 'Project')}
-                  options={doughnutOptions}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div style={styles.fullWidthChart}>
-            <div style={styles.chartContainer}>
-              <h3 style={styles.chartTitle}>Project Progress Over Time</h3>
-              <div style={styles.chartWrapper}>
-                <Line
-                  data={createTypeTimeChart(processedData.projectStats.timeBasedData, 'Project')}
-                  options={lineChartOptions}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div style={styles.recentBadgesSection}>
-            <h3 style={styles.sectionTitle}>Recent Project Achievements</h3>
-            <div style={styles.badgesGrid}>
-              {processedData.projectStats.recentBadges.slice(0, 5).map((badge, index) => (
-                <div key={index} style={styles.badgeCard}>
-                  <div 
-                    style={{
-                      ...styles.badgeIcon,
-                      backgroundColor: badgeDifficultyMap[badge.title]?.color || '#gray'
-                    }}
-                  >
-                    {badge.title}
-                  </div>
-                  <div style={styles.badgeInfo}>
-                    <h4 style={styles.badgeTitle}>PROJECT</h4>
-                    <p style={styles.badgeDescription}>{badge.description}</p>
-                    <span style={styles.badgeDate}>
-                      {new Date(badge.dateEarned).toLocaleDateString()}
-                    </span>
-                    <span style={styles.badgePoints}>
-                      +{badgeDifficultyMap[badge.title]?.points || 0} points
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </>
-      )}
-
-      {/* Badge Bonus View */}
-      {selectedView === 'badges' && (
-        <>
-          <div style={styles.bonusHeader}>
-            <h3 style={styles.typeTitle}>🏆 Convert Badges to Bonus</h3>
-            <div style={styles.bonusControls}>
-              <div style={styles.selectedInfo}>
-                Selected: {selectedBadges.length} badges • Total: ${calculateTotalBonus()}
-              </div>
+          
+          <div style={styles.headerControls}>
+            <div style={styles.viewSelector}>
               <button 
-                onClick={handleBonusPayment}
-                disabled={selectedBadges.length === 0}
+                onClick={() => setSelectedView('overview')}
                 style={{
-                  ...styles.bonusButton,
-                  ...(selectedBadges.length === 0 ? styles.bonusButtonDisabled : {})
+                  ...styles.viewButton,
+                  ...(selectedView === 'overview' ? styles.viewButtonActive : {})
                 }}
               >
-                💰 Process Bonus Payment
+                Overview
+              </button>
+              <button 
+                onClick={() => setSelectedView('badges')}
+                style={{
+                  ...styles.viewButton,
+                  ...(selectedView === 'badges' ? styles.viewButtonActive : {})
+                }}
+              >
+                Badge Bonus
+              </button>
+              <button 
+                onClick={() => setSelectedView('courses')}
+                style={{
+                  ...styles.viewButton,
+                  ...(selectedView === 'courses' ? styles.viewButtonActive : {})
+                }}
+              >
+                Courses Analytics
+              </button>
+              <button 
+                onClick={() => setSelectedView('projects')}
+                style={{
+                  ...styles.viewButton,
+                  ...(selectedView === 'projects' ? styles.viewButtonActive : {})
+                }}
+              >
+                Projects Analytics
               </button>
             </div>
+            <div style={styles.periodSelector}>
+              <label htmlFor="period-select" style={styles.label}>Period: </label>
+              <select
+                id="period-select"
+                value={selectedPeriod}
+                onChange={(e) => setSelectedPeriod(e.target.value)}
+                style={styles.select}
+              >
+                <option value="all">All Periods</option>
+                {periods.map(period => (
+                  <option key={period} value={period}>{period}</option>
+                ))}
+              </select>
+            </div>
           </div>
+        </div>
 
+        {/* Overview View */}
+        {selectedView === 'overview' && (
+          <>
+            <div style={styles.summaryGrid}>
+              <div style={styles.summaryCard}>
+                <div style={styles.summaryIcon}>
+                  <TrendingUp size={24} />
+                </div>
+                <h3 style={styles.summaryTitle}>Course Points</h3>
+                <p style={styles.summaryValue}>{processedData.courseStats.totalPoints}</p>
+                <span style={styles.summarySubtext}>{processedData.courseStats.totalBadges} badges earned</span>
+              </div>
+              <div style={styles.summaryCard}>
+                <div style={styles.summaryIcon}>
+                  <Award size={24} />
+                </div>
+                <h3 style={styles.summaryTitle}>Project Points</h3>
+                <p style={styles.summaryValue}>{processedData.projectStats.totalPoints}</p>
+                <span style={styles.summarySubtext}>{processedData.projectStats.totalBadges} badges earned</span>
+              </div>
+              <div style={styles.summaryCard}>
+                <div style={styles.summaryIcon}>
+                  <CheckCircle size={24} />
+                </div>
+                <h3 style={styles.summaryTitle}>Course Completion</h3>
+                <p style={styles.summaryValue}>{processedData.courseStats.completionRate}%</p>
+                <span style={styles.summarySubtext}>{processedData.courseStats.goals.completed} of {processedData.courseStats.goals.total} goals</span>
+              </div>
+              <div style={styles.summaryCard}>
+                <div style={styles.summaryIcon}>
+                  <DollarSign size={24} />
+                </div>
+                <h3 style={styles.summaryTitle}>Total Bonus Value</h3>
+                <p style={styles.summaryValue}>${processedData.allBadges.reduce((total, badge) => total + badge.bonusValue, 0)}</p>
+                <span style={styles.summarySubtext}>Available for conversion</span>
+              </div>
+            </div>
 
-          <div style={styles.badgeSelectionGrid}>
-            {processedData.allBadges
-              .filter(badge => !badge.approved) // Filter out approved badges
-              .map((badge, index) => {
-                const isSelected = selectedBadges.find(b => b.id === badge.id);
-                return (
-                  <div 
-                    key={badge.id || index} 
-                    style={{
-                      ...styles.selectableBadgeCard,
-                      ...(isSelected ? styles.selectedBadgeCard : {})
-                    }}
-                    onClick={() => handleBadgeSelect(badge)}
-                  >
-                    <div style={styles.badgeCardHeader}>
-                      <div 
-                        style={{
-                          ...styles.badgeIcon,
-                          backgroundColor: badgeDifficultyMap[badge.title]?.color || '#gray'
-                        }}
-                      >
-                        {badge.title}
-                      </div>
-                      <div style={styles.badgeCardInfo}>
-                        <h4 style={styles.badgeCardTitle}>{badge.type.toUpperCase()}</h4>
-                        <p style={styles.badgeCardDescription}>{badge.description}</p>
-                      </div>
-                      <div style={styles.bonusValueContainer}>
-                        <span style={styles.bonusValue}>${badge.bonusValue}</span>
-                        <span style={styles.bonusLabel}>Bonus</span>
-                      </div>
+            <div style={styles.chartsGrid}>
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Course Badges Overview</h3>
+                <div style={styles.chartWrapper}>
+                  <Bar
+                    data={createTypeSpecificChart(processedData.courseData, 'Course')}
+                    options={chartOptions}
+                  />
+                </div>
+              </div>
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Project Badges Overview</h3>
+                <div style={styles.chartWrapper}>
+                  <Bar
+                    data={createTypeSpecificChart(processedData.projectData, 'Project')}
+                    options={chartOptions}
+                  />
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* Courses Analytics View */}
+        {selectedView === 'courses' && (
+          <>
+            <div style={styles.typeHeader}>
+              <h3 style={styles.typeTitle}>📚 Courses Performance Analytics</h3>
+              <div style={styles.typeStats}>
+                <span>Total Points: <strong>{processedData.courseStats.totalPoints}</strong></span>
+                <span>Total Badges: <strong>{processedData.courseStats.totalBadges}</strong></span>
+                <span>Completion Rate: <strong>{processedData.courseStats.completionRate}%</strong></span>
+              </div>
+            </div>
+
+            <div style={styles.chartsGrid}>
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Course Badges by Difficulty</h3>
+                <div style={styles.chartWrapper}>
+                  <Bar
+                    data={createTypeSpecificChart(processedData.courseData, 'Course')}
+                    options={chartOptions}
+                  />
+                </div>
+              </div>
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Course Goal Status</h3>
+                <div style={styles.chartWrapper}>
+                  <Doughnut
+                    data={createTypeGoalChart(processedData.courseStats.goals, 'Course')}
+                    options={doughnutOptions}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div style={styles.fullWidthChart}>
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Course Progress Over Time</h3>
+                <div style={styles.chartWrapper}>
+                  <Line
+                    data={createTypeTimeChart(processedData.courseStats.timeBasedData, 'Course')}
+                    options={lineChartOptions}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div style={styles.recentBadgesSection}>
+              <h3 style={styles.sectionTitle}>Recent Course Achievements</h3>
+              <div style={styles.badgesGrid}>
+                {processedData.courseStats.recentBadges.slice(0, 5).map((badge, index) => (
+                  <div key={index} style={styles.badgeCard}>
+                    <div 
+                      style={{
+                        ...styles.badgeIcon,
+                        backgroundColor: badgeDifficultyMap[badge.title]?.color || '#gray'
+                      }}
+                    >
+                      {badge.title}
                     </div>
-                    <div style={styles.badgeCardFooter}>
+                    <div style={styles.badgeInfo}>
+                      <h4 style={styles.badgeTitle}>COURSE</h4>
+                      <p style={styles.badgeDescription}>{badge.description}</p>
                       <span style={styles.badgeDate}>
                         {new Date(badge.dateEarned).toLocaleDateString()}
                       </span>
-                      <span style={styles.badgePeriod}>{badge.period}</span>
+                      <span style={styles.badgePoints}>
+                        +{badgeDifficultyMap[badge.title]?.points || 0} points
+                      </span>
                     </div>
-                    {isSelected && (
-                      <div style={styles.selectedIndicator}>✓</div>
-                    )}
-                  </div>
-                );
-              })}
-          </div>
-
-          {/* Add this message when no unapproved badges are available */}
-          {processedData.allBadges.filter(badge => !badge.approved).length === 0 && (
-            <div style={styles.noBadgesMessage}>
-              <h3>No Badges Available for Bonus</h3>
-              <p>All earned badges have already been processed for payment.</p>
-            </div>
-          )}
-
-
-
-        </>
-      )}
-
-      {/* Bonus Payment Modal */}
-      {showBonusModal && (
-        <div style={styles.modalOverlay}>
-          <div style={styles.modal}>
-            <h3 style={styles.modalTitle}>Confirm Bonus Payment</h3>
-            <div style={styles.modalContent}>
-              <p><strong>Employee:</strong> {selectedEmployee.name}</p>
-              <p><strong>Selected Badges:</strong> {selectedBadges.length}</p>
-              <p><strong>Total Bonus Amount:</strong> ${bonusAmount}</p>
-              
-              <div style={styles.selectedBadgesList}>
-                {selectedBadges.map((badge, index) => (
-                  <div key={index} style={styles.modalBadgeItem}>
-                    <span style={{
-                      ...styles.modalBadgeIcon,
-                      backgroundColor: badgeDifficultyMap[badge.title]?.color
-                    }}>
-                      {badge.title}
-                    </span>
-                    <span>{badge.type} - ${badge.bonusValue}</span>
                   </div>
                 ))}
               </div>
             </div>
-            
-            <div style={styles.modalActions}>
-              <button 
-                onClick={() => setShowBonusModal(false)}
-                style={styles.cancelButton}
-                disabled={paymentLoading}
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={processPayment}
-                style={styles.confirmButton}
-                disabled={paymentLoading}
-              >
-                {paymentLoading ? 'Processing...' : 'Pay with Stripe'}
-              </button>
+          </>
+        )}
+
+        {/* Projects Analytics View */}
+        {selectedView === 'projects' && (
+          <>
+            <div style={styles.typeHeader}>
+              <h3 style={styles.typeTitle}>🚀 Projects Performance Analytics</h3>
+              <div style={styles.typeStats}>
+                <span>Total Points: <strong>{processedData.projectStats.totalPoints}</strong></span>
+                <span>Total Badges: <strong>{processedData.projectStats.totalBadges}</strong></span>
+                <span>Completion Rate: <strong>{processedData.projectStats.completionRate}%</strong></span>
+              </div>
+            </div>
+
+            <div style={styles.chartsGrid}>
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Project Badges by Difficulty</h3>
+                <div style={styles.chartWrapper}>
+                  <Bar
+                    data={createTypeSpecificChart(processedData.projectData, 'Project')}
+                    options={chartOptions}
+                  />
+                </div>
+              </div>
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Project Goal Status</h3>
+                <div style={styles.chartWrapper}>
+                  <Doughnut
+                    data={createTypeGoalChart(processedData.projectStats.goals, 'Project')}
+                    options={doughnutOptions}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div style={styles.fullWidthChart}>
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Project Progress Over Time</h3>
+                <div style={styles.chartWrapper}>
+                  <Line
+                    data={createTypeTimeChart(processedData.projectStats.timeBasedData, 'Project')}
+                    options={lineChartOptions}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div style={styles.recentBadgesSection}>
+              <h3 style={styles.sectionTitle}>Recent Project Achievements</h3>
+              <div style={styles.badgesGrid}>
+                {processedData.projectStats.recentBadges.slice(0, 5).map((badge, index) => (
+                  <div key={index} style={styles.badgeCard}>
+                    <div 
+                      style={{
+                        ...styles.badgeIcon,
+                        backgroundColor: badgeDifficultyMap[badge.title]?.color || '#gray'
+                      }}
+                    >
+                      {badge.title}
+                    </div>
+                    <div style={styles.badgeInfo}>
+                      <h4 style={styles.badgeTitle}>PROJECT</h4>
+                      <p style={styles.badgeDescription}>{badge.description}</p>
+                      <span style={styles.badgeDate}>
+                        {new Date(badge.dateEarned).toLocaleDateString()}
+                      </span>
+                      <span style={styles.badgePoints}>
+                        +{badgeDifficultyMap[badge.title]?.points || 0} points
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* Badge Bonus View */}
+        {selectedView === 'badges' && (
+          <>
+            <div style={styles.bonusHeader}>
+              <h3 style={styles.typeTitle}>🏆 Convert Badges to Bonus</h3>
+              <div style={styles.bonusControls}>
+                <div style={styles.selectedInfo}>
+                  Selected: {selectedBadges.length} badges • Total: ${calculateTotalBonus()}
+                </div>
+                <button 
+                  onClick={handleBonusPayment}
+                  disabled={selectedBadges.length === 0}
+                  style={{
+                    ...styles.bonusButton,
+                    ...(selectedBadges.length === 0 ? styles.bonusButtonDisabled : {})
+                  }}
+                >
+                  <DollarSign size={16} />
+                  Process Bonus Payment
+                </button>
+              </div>
+            </div>
+
+            <div style={styles.badgeSelectionGrid}>
+              {processedData.allBadges
+                .filter(badge => !badge.approved) // Filter out approved badges
+                .map((badge, index) => {
+                  const isSelected = selectedBadges.find(b => b.id === badge.id);
+                  return (
+                    <div 
+                      key={badge.id || index} 
+                      style={{
+                        ...styles.selectableBadgeCard,
+                        ...(isSelected ? styles.selectedBadgeCard : {})
+                      }}
+                      onClick={() => handleBadgeSelect(badge)}
+                    >
+                      <div style={styles.badgeCardHeader}>
+                        <div 
+                          style={{
+                            ...styles.badgeIcon,
+                            backgroundColor: badgeDifficultyMap[badge.title]?.color || '#gray'
+                          }}
+                        >
+                          {badge.title}
+                        </div>
+                        <div style={styles.badgeCardInfo}>
+                          <h4 style={styles.badgeCardTitle}>{badge.type.toUpperCase()}</h4>
+                          <p style={styles.badgeCardDescription}>{badge.description}</p>
+                        </div>
+                        <div style={styles.bonusValueContainer}>
+                          <span style={styles.bonusValue}>${badge.bonusValue}</span>
+                          <span style={styles.bonusLabel}>Bonus</span>
+                        </div>
+                      </div>
+                      <div style={styles.badgeCardFooter}>
+                        <span style={styles.badgeDate}>
+                          {new Date(badge.dateEarned).toLocaleDateString()}
+                        </span>
+                        <span style={styles.badgePeriod}>{badge.period}</span>
+                      </div>
+                      {isSelected && (
+                        <div style={styles.selectedIndicator}>✓</div>
+                      )}
+                    </div>
+                  );
+                })}
+            </div>
+
+            {/* Add this message when no unapproved badges are available */}
+            {processedData.allBadges.filter(badge => !badge.approved).length === 0 && (
+              <div style={styles.noBadgesMessage}>
+                <h3>No Badges Available for Bonus</h3>
+                <p>All earned badges have already been processed for payment.</p>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Bonus Payment Modal */}
+        {showBonusModal && (
+          <div style={styles.modalOverlay}>
+            <div style={styles.modal}>
+              <h3 style={styles.modalTitle}>Confirm Bonus Payment</h3>
+              <div style={styles.modalContent}>
+                <p><strong>Employee:</strong> {selectedEmployee.name}</p>
+                <p><strong>Selected Badges:</strong> {selectedBadges.length}</p>
+                <p><strong>Total Bonus Amount:</strong> ${bonusAmount}</p>
+                
+                <div style={styles.selectedBadgesList}>
+                  {selectedBadges.map((badge, index) => (
+                    <div key={index} style={styles.modalBadgeItem}>
+                      <span style={{
+                        ...styles.modalBadgeIcon,
+                        backgroundColor: badgeDifficultyMap[badge.title]?.color
+                      }}>
+                        {badge.title}
+                      </span>
+                      <span>{badge.type} - ${badge.bonusValue}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div style={styles.modalActions}>
+                <button 
+                  onClick={() => setShowBonusModal(false)}
+                  style={styles.cancelButton}
+                  disabled={paymentLoading}
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={processPayment}
+                  style={styles.confirmButton}
+                  disabled={paymentLoading}
+                >
+                  {paymentLoading ? 'Processing...' : 'Pay with Stripe'}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+
+      <style jsx>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
-};
-
-// Keep all your existing styles - they're perfect
-const styles = {
-  reviewContainer: {
-    padding: '0',
-    backgroundColor: '#f8f9fa',
-    minHeight: '100vh'
-  },
-  
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '2rem',
-    backgroundColor: 'white',
-    padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    flexWrap: 'wrap',
-    gap: '1rem'
-  },
-  
-  title: {
-    color: '#2c3e50',
-    margin: 0,
-    fontSize: '2rem',
-    fontWeight: 'bold'
-  },
-  
-  searchContainer: {
-    flex: 1,
-    maxWidth: '400px'
-  },
-  
-  searchInput: {
-    width: '100%',
-    padding: '0.75rem 1rem',
-    borderRadius: '8px',
-    border: '1px solid #ddd',
-    fontSize: '1rem',
-    outline: 'none',
-    transition: 'border-color 0.3s ease'
-  },
-  
-  employeeGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
-    gap: '1.5rem',
-    padding: '0'
-  },
-  
-  employeeCard: {
-    backgroundColor: 'white',
-    borderRadius: '12px',
-    padding: '1.5rem',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    border: '1px solid #e9ecef'
-  },
-  
-  employeeHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '1rem'
-  },
-  
-  employeeAvatar: {
-    width: '60px',
-    height: '60px',
-    borderRadius: '50%',
-    backgroundColor: '#3498db',
-    color: 'white',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '1.2rem',
-    fontWeight: 'bold',
-    marginRight: '1rem',
-    flexShrink: 0
-  },
-  
-  employeeInfo: {
-    flex: 1
-  },
-  
-  nameAndRole: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    marginBottom: '0.25rem'
-  },
-  
-  employeeName: {
-    margin: 0,
-    color: '#2c3e50',
-    fontSize: '1.2rem',
-    fontWeight: '600'
-  },
-  
-  roleBadge: {
-    fontSize: '0.7rem',
-    padding: '0.2rem 0.5rem',
-    borderRadius: '12px',
-    color: 'white',
-    fontWeight: '600',
-    textTransform: 'uppercase'
-  },
-  
-  employeePosition: {
-    margin: '0 0 0.25rem 0',
-    color: '#7f8c8d',
-    fontSize: '0.9rem'
-  },
-  
-  employeeDepartment: {
-    margin: 0,
-    color: '#95a5a6',
-    fontSize: '0.8rem',
-    fontWeight: '500'
-  },
-  
-  employeeStats: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginBottom: '1rem',
-    paddingTop: '1rem',
-    borderTop: '1px solid #ecf0f1'
-  },
-  
-  statItem: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  
-  statLabel: {
-    fontSize: '0.75rem',
-    color: '#95a5a6',
-    marginBottom: '0.25rem',
-    textTransform: 'uppercase',
-    letterSpacing: '0.5px'
-  },
-  
-  statValue: {
-    fontSize: '0.9rem',
-    color: '#2c3e50',
-    fontWeight: '600'
-  },
-  
-  viewButton: {
-    textAlign: 'center',
-    color: '#3498db',
-    fontSize: '0.9rem',
-    fontWeight: '500',
-    padding: '0.5rem',
-    backgroundColor: '#f8f9fa',
-    borderRadius: '6px',
-    transition: 'all 0.3s ease'
-  },
-  
-  employeeHeaderInfo: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem'
-  },
-  
-  backButton: {
-    backgroundColor: '#6c757d',
-    color: 'white',
-    border: 'none',
-    padding: '0.5rem 1rem',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '0.9rem',
-    fontWeight: '500',
-    transition: 'background-color 0.3s ease'
-  },
-  
-  selectedEmployeeInfo: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem'
-  },
-  
-  selectedEmployeeName: {
-    margin: 0,
-    color: '#2c3e50',
-    fontSize: '1.5rem',
-    fontWeight: 'bold'
-  },
-  
-  selectedEmployeeDetails: {
-    margin: 0,
-    color: '#7f8c8d',
-    fontSize: '1rem'
-  },
-  
-  headerControls: {
-    display: 'flex',
-    gap: '1rem',
-    alignItems: 'center',
-    flexWrap: 'wrap'
-  },
-  
-  viewSelector: {
-    display: 'flex',
-    backgroundColor: '#ecf0f1',
-    borderRadius: '8px',
-    padding: '4px'
-  },
-  
-  viewButton: {
-    padding: '0.5rem 1rem',
-    border: 'none',
-    backgroundColor: 'transparent',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '0.9rem',
-    fontWeight: '500',
-    color: '#7f8c8d',
-    transition: 'all 0.3s ease'
-  },
-  
-  viewButtonActive: {
-    backgroundColor: '#3498db',
-    color: 'white',
-    boxShadow: '0 2px 4px rgba(52, 152, 219, 0.3)'
-  },
-  
-  periodSelector: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem'
-  },
-  
-  label: {
-    color: '#7f8c8d',
-    fontWeight: '500'
-  },
-  
-  select: {
-    padding: '0.5rem 1rem',
-    borderRadius: '5px',
-    border: '1px solid #ddd',
-    fontSize: '1rem',
-    backgroundColor: 'white'
-  },
-  
-  // Add missing styles for new sections
-  fullWidthChart: {
-    marginBottom: '2rem'
-  },
-  
-  recentBadgesSection: {
-    backgroundColor: 'white',
-    padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    marginBottom: '2rem'
-  },
-  
-  sectionTitle: {
-    color: '#2c3e50',
-    marginBottom: '1rem',
-    fontSize: '1.3rem',
-    fontWeight: '600'
-  },
-  
-  badgesGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-    gap: '1rem'
-  },
-  
-  badgeCard: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem',
-    padding: '1rem',
-    backgroundColor: '#f8f9fa',
-    borderRadius: '8px',
-    border: '1px solid #e9ecef'
-  },
-  
-  badgeIcon: {
-    width: '50px',
-    height: '50px',
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: '0.8rem',
-    flexShrink: 0
-  },
-  
-  badgeInfo: {
-    flex: 1
-  },
-  
-  badgeTitle: {
-    margin: '0 0 0.25rem 0',
-    color: '#2c3e50',
-    fontSize: '0.9rem',
-    fontWeight: '600'
-  },
-  
-  badgeDescription: {
-    margin: '0 0 0.5rem 0',
-    color: '#7f8c8d',
-    fontSize: '0.8rem',
-    lineHeight: '1.4'
-  },
-  
-  badgeDate: {
-    color: '#95a5a6',
-    fontSize: '0.75rem',
-    marginRight: '1rem'
-  },
-  
-  badgePoints: {
-    color: '#27ae60',
-    fontSize: '0.75rem',
-    fontWeight: '600'
-  },
-  
-  // Bonus-specific styles
-  bonusHeader: {
-    backgroundColor: 'white',
-    padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    marginBottom: '2rem',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    gap: '1rem'
-  },
-  
-  bonusControls: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem',
-    flexWrap: 'wrap'
-  },
-  
-  selectedInfo: {
-    color: '#7f8c8d',
-    fontSize: '1rem',
-    fontWeight: '500'
-  },
-  
-  bonusButton: {
-    backgroundColor: '#27ae60',
-    color: 'white',
-    border: 'none',
-    padding: '0.75rem 1.5rem',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    fontSize: '1rem',
-    fontWeight: '600',
-    transition: 'all 0.3s ease',
-    boxShadow: '0 2px 4px rgba(39, 174, 96, 0.3)'
-  },
-  
-  bonusButtonDisabled: {
-    backgroundColor: '#bdc3c7',
-    cursor: 'not-allowed',
-    boxShadow: 'none'
-  },
-  
-  badgeSelectionGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
-    gap: '1.5rem'
-  },
-  
-  selectableBadgeCard: {
-    backgroundColor: 'white',
-    borderRadius: '12px',
-    padding: '1.5rem',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    border: '2px solid #e9ecef',
-    position: 'relative'
-  },
-  
-  selectedBadgeCard: {
-    borderColor: '#27ae60',
-    backgroundColor: '#f8fff9',
-    transform: 'translateY(-2px)',
-    boxShadow: '0 4px 12px rgba(39, 174, 96, 0.2)'
-  },
-  
-  badgeCardHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1rem',
-    marginBottom: '1rem'
-  },
-  
-  badgeCardInfo: {
-    flex: 1
-  },
-  
-  badgeCardTitle: {
-    margin: '0 0 0.25rem 0',
-    color: '#2c3e50',
-    fontSize: '0.9rem',
-    fontWeight: '600'
-  },
-  
-  badgeCardDescription: {
-    margin: 0,
-    color: '#7f8c8d',
-    fontSize: '0.8rem',
-    lineHeight: '1.4'
-  },
-  
-  bonusValueContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    textAlign: 'center'
-  },
-  
-  bonusValue: {
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-    color: '#27ae60'
-  },
-  
-  bonusLabel: {
-    fontSize: '0.7rem',
-    color: '#95a5a6',
-    textTransform: 'uppercase',
-    letterSpacing: '0.5px'
-  },
-  
-  badgeCardFooter: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: '1rem',
-    borderTop: '1px solid #ecf0f1'
-  },
-  
-  badgePeriod: {
-    color: '#7f8c8d',
-    fontSize: '0.75rem',
-    fontWeight: '500'
-  },
-  
-  selectedIndicator: {
-    position: 'absolute',
-    top: '10px',
-    right: '10px',
-    backgroundColor: '#27ae60',
-    color: 'white',
-    borderRadius: '50%',
-    width: '24px',
-    height: '24px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '0.8rem',
-    fontWeight: 'bold'
-  },
-  
-  // Modal styles
-  modalOverlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1000
-  },
-  
-  modal: {
-    backgroundColor: 'white',
-    borderRadius: '12px',
-    padding: '2rem',
-    maxWidth: '500px',
-    width: '90%',
-    maxHeight: '80vh',
-    overflow: 'auto'
-  },
-  
-  modalTitle: {
-    margin: '0 0 1.5rem 0',
-    color: '#2c3e50',
-    fontSize: '1.5rem',
-    fontWeight: 'bold'
-  },
-  
-  modalContent: {
-    marginBottom: '2rem'
-  },
-  
-  selectedBadgesList: {
-    marginTop: '1rem',
-    maxHeight: '200px',
-    overflow: 'auto'
-  },
-  
-  modalBadgeItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    padding: '0.5rem 0',
-    borderBottom: '1px solid #ecf0f1'
-  },
-  
-  modalBadgeIcon: {
-    width: '24px',
-    height: '24px',
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: 'white',
-    fontSize: '0.6rem',
-    fontWeight: 'bold'
-  },
-  
-  modalActions: {
-    display: 'flex',
-    gap: '1rem',
-    justifyContent: 'flex-end'
-  },
-  
-  cancelButton: {
-    backgroundColor: '#6c757d',
-    color: 'white',
-    border: 'none',
-    padding: '0.75rem 1.5rem',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '1rem',
-    fontWeight: '500'
-  },
-  
-  confirmButton: {
-    backgroundColor: '#6772e5',
-    color: 'white',
-    border: 'none',
-    padding: '0.75rem 1.5rem',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '1rem',
-    fontWeight: '500',
-    transition: 'background-color 0.3s ease'
-  },
-  
-  summaryGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '1.5rem',
-    marginBottom: '2rem'
-  },
-  
-  summaryCard: {
-    backgroundColor: 'white',
-    padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    textAlign: 'center'
-  },
-  
-  summaryTitle: {
-    color: '#7f8c8d',
-    fontSize: '0.9rem',
-    fontWeight: '500',
-    margin: '0 0 0.5rem 0',
-    textTransform: 'uppercase',
-    letterSpacing: '0.5px'
-  },
-  
-  summaryValue: {
-    color: '#2c3e50',
-    fontSize: '2.5rem',
-    fontWeight: 'bold',
-    margin: '0 0 0.25rem 0'
-  },
-  
-  summarySubtext: {
-    color: '#95a5a6',
-    fontSize: '0.8rem'
-  },
-  
-  chartsGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-    gap: '2rem',
-    marginBottom: '2rem'
-  },
-  
-  chartContainer: {
-    backgroundColor: 'white',
-    padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-  },
-  
-  chartTitle: {
-    color: '#2c3e50',
-    marginBottom: '1rem',
-    fontSize: '1.2rem',
-    fontWeight: '600'
-  },
-  
-  chartWrapper: {
-    height: '300px',
-    position: 'relative'
-  },
-  
-  typeHeader: {
-    backgroundColor: 'white',
-    padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    marginBottom: '2rem'
-  },
-  
-  typeTitle: {
-    color: '#2c3e50',
-    margin: '0 0 1rem 0',
-    fontSize: '1.5rem',
-    fontWeight: '600'
-  },
-  
-  typeStats: {
-    display: 'flex',
-    gap: '2rem',
-    flexWrap: 'wrap'
-  },
-  
-  loadingContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '400px',
-    color: '#7f8c8d'
-  },
-  
-  spinner: {
-    width: '40px',
-    height: '40px',
-    border: '4px solid #f3f3f3',
-    borderTop: '4px solid #3498db',
-    borderRadius: '50%',
-    animation: 'spin 1s linear infinite',
-    marginBottom: '1rem'
-  },
-  
-  errorContainer: {
-    textAlign: 'center',
-    padding: '2rem',
-    backgroundColor: 'white',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-  },
-  
-  retryButton: {
-    backgroundColor: '#3498db',
-    color: 'white',
-    border: 'none',
-    padding: '0.75rem 1.5rem',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    fontSize: '1rem',
-    marginTop: '1rem'
-  },
-  
-  noDataContainer: {
-    textAlign: 'center',
-    padding: '3rem',
-    backgroundColor: 'white',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    color: '#7f8c8d'
-  },
-  
-  noResults: {
-    textAlign: 'center',
-    padding: '3rem',
-    backgroundColor: 'white',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    color: '#7f8c8d'
-  },
-  noBadgesMessage: {
-    textAlign: 'center',
-    padding: '3rem',
-    backgroundColor: '#f8f9fa',
-    borderRadius: '8px',
-    border: '2px dashed #dee2e6',
-    color: '#6c757d'
-  }
 };
 
 export default Review;
